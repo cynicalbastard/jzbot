@@ -1,0 +1,1 @@
+Marlen_Jackson is the official JZBot. He (yes, it's a "he") connects to irc.freenode.net and stays at a bunch of channels there. Join #bztraining (which is one of the channels that he's at) and send "~help", and he'll respond to you. Or try "~roulette". 
