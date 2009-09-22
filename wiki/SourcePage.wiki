@@ -1,0 +1,1 @@
+Right now, JZBot's source is over at the JWUtils project (specifically at [http://code.google.com/p/jwutils/source/browse/#svn/trunk/projects/jzbot2-old]). 
