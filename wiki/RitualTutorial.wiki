@@ -39,7 +39,7 @@ Example:
 <schrottplatz> ~factoid replace test {{action}}slaps schrottplatz with an old green fish
 <Marlen_Jackson> Factoid test created.
 <schrottplatz> ~test
-* Marlen_Jackson slaps schrottplatz with an old green fish
+`*` Marlen_Jackson slaps schrottplatz with an old green fish
 <schrottplatz> ~factoid delete test
 <Marlen_Jackson> Factoid test deleted.
 </code></td>
