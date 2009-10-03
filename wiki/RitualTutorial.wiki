@@ -1,3 +1,4 @@
+= the basic syntax =
 The basic syntax of a factoid:
 <font color="blue">~factoid</font> <font color="red">create</font> <font color="lime">Do something</font>
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
@@ -24,3 +25,8 @@ lets clean everything up again :)
 and we are done :D
 </code>
 </td></tr></table>
+
+= functions =
+in ritual the functions are called like this:
+||{{ || action ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
+||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
