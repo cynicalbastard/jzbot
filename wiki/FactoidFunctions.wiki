@@ -1,4 +1,4 @@
-<table><tr><td><wiki:toc max_depth="1" /></td><td>
+<table><tr><td width="10%"><wiki:toc max_depth="1" /></td><td>
 =Functions= 
 ==action==
  Syntax: {{action}} -- Causes the factoid to appear using "/me". It essentially causes the bot to do the equivalent of prepending the message with "/me" on a typical IRC client.
