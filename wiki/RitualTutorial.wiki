@@ -36,7 +36,7 @@ Example:
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
 <td><code>
-<schrottplatz> ~factoid replace test {{action}}slaps schrottplatz with an old green fish
+<schrottplatz> ~factoid create test {{action}}slaps schrottplatz with an old green fish
 <Marlen_Jackson> Factoid test created.
 <schrottplatz> ~test
 `*` Marlen_Jackson slaps schrottplatz with an old green fish
