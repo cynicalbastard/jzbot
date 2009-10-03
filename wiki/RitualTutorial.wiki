@@ -53,3 +53,4 @@ lets clean everything up again :)
 and we are done agian :D
 </code>
 </td></tr></table>
+a list with all functions is available via ~help functions or the [[FactoidFunctions Functions list]]
