@@ -19,7 +19,7 @@ Example:
 <code>
 create the new factoid
 the bot acknowledges the new factoid without an Error message
-call the function
+call the factoid
 the bot executes the function
 lets clean everything up again :)
 and we are done :D
@@ -28,5 +28,28 @@ and we are done :D
 
 = functions =
 in ritual the functions are called like this:
-||{{ || action ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
+||{{ || function ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
 ||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
+
+Example:
+<table><tr>
+<td> *Code:* </td><td> *Comment:* </td>
+</tr><tr>
+<td><code>
+<schrottplatz> ~factoid replace test {{action}}slaps schrottplatz with an old green fish
+<Marlen_Jackson> Factoid test created.
+<schrottplatz> ~test
+* Marlen_Jackson slaps schrottplatz with an old green fish
+<schrottplatz> ~factoid delete test
+<Marlen_Jackson> Factoid test deleted.
+</code></td>
+<td>
+<code>
+in this case the function "action" doesnt need any parameters
+the bot acknowledges the factoid
+call the factoid
+the bot executes the function
+lets clean everything up again :)
+and we are done agian :D
+</code>
+</td></tr></table>
