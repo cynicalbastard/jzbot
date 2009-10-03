@@ -1,4 +1,5 @@
- * [functionlist Function List]
+ * [FactoidFunctions Functions]
+ * [functionlist Function Overview]
      * [FactoidFunctions#action action]
      * [FactoidFunctions#ascii ascii]
      * [FactoidFunctions#b b]
