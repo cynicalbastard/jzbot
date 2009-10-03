@@ -1,3 +1,4 @@
+<wiki:comment>Paste this into the "functionlist" page.</wiki:comment>
  * [FactoidFunctions Functions]
  * [functionlist Function Overview]
      * [FactoidFunctions#action action]
