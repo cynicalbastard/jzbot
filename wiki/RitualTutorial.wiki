@@ -3,15 +3,24 @@ The basic syntax of a factoid:
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
  * Use <font color="red">create</font> for creating a new factoid, <font color="red">replace</font> to replace an existing factoid or <font color="red">delete</font> to delete it
 Example:
-|| Code: || Comment ||
-<code>
+<table><tr>
+<td> *Code:* </td><td> *Comment:* </td>
+</tr><tr>
+<td><code>
 <schrottplatz> ~factoid create test Hello World!
 <Marlen_Jackson> Factoid test created.
 <schrottplatz> ~test
 <Marlen_Jackson> Hello World!
 <schrottplatz> ~factoid delete test
 <Marlen_Jackson> Factoid test deleted.
+</code></td>
+<td>
+<code>
+create the new factoid
+the bot acknowledges the new factoid without an Error message
+call the function
+the bot executes the function
+lets clean everything up again :)
+and we are done :D
 </code>
-||
-create the new
-||
+</td></tr></table>
