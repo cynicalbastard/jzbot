@@ -1,5 +1,5 @@
-<wiki:comment>Paste this into the "FactoidFunctions" page. Dont forget the Navigation (run ~jzwikinav)</wiki:comment>
 #sidebar functionlist
+<wiki:comment>Paste this into the "FactoidFunctions" page. Dont forget the Navigation (run ~jzwikinav)</wiki:comment>
 =Functions= 
 ==action==
  Syntax: {{action}} -- Causes the factoid to appear using "/me". It essentially causes the bot to do the equivalent of prepending the message with "/me" on a typical IRC client.
@@ -188,7 +188,7 @@ Currently, empty values at the end of the list are ignored. This means that in t
  Syntax: {{splitindex`||``<`regex>`||``<`text>`||``<`max>`||``<`index>}} -- Splits `<`text> around the regular expression `<`regex> to a maximum length of `<`max>, and then returns the `<`index>th element in that new list. For example, {{splitindex`||`_`||`first_second_third_fourth`||`10`||`3}} evaluates to "third", and {{splitindex`||`_`||`first_second_third_fourth`||`2`||`2}} evaluates to "second_third_fourth".
 In other words, all tokens after (and including) the `<`max>th token are concatenated (split by the delimiter that `<`regex> matched) and used as the last token.
 ==starthttp==
- Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d44758cc5 for more info.
+ Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d3ce455cc for more info.
 ==stophttp==
  Syntax: {{stophttp`||``<`port>}} -- Stops an HTTP server running on the specified port. See {{starthttp}} for more information on what HTTP servers are.
 ==substring==
