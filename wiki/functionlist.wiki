@@ -1,1 +1,1 @@
-[FactoidFunctions#action]
+[FactoidFunctions#action action]
