@@ -1,6 +1,4 @@
-||
-<wiki:toc max_depth="2" /> 
-||
+<table><tr><td><wiki:toc max_depth="1" /></td><td>
 =Functions= 
 ==action==
  Syntax: {{action}} -- Causes the factoid to appear using "/me". It essentially causes the bot to do the equivalent of prepending the message with "/me" on a typical IRC client.
@@ -221,4 +219,4 @@ This function is deprecated, and "\u" should be used instead.
  Syntax: {{wait`||``<`duration>}} -- Waits `<`duration> milliseconds before continuing. The bot has a built-in timer that won't let a factoid run longer than 20 seconds, so don't make `<`duration> longer than that.
 ==weather==
  Syntax: {{weather`||``<`zipcode>`||``<`prefix>}} -- Gets information on the current weather conditions for `<`zipcode> by contacting the WeatherBug and Yahoo servers. Weather information is then placed in a number of different local variables, each prefixed with `<`prefix> to avoid conflicting variable names. `<`prefix> is optional, and will default to nothing (IE no prefix) if not present.
-||
+</td></tr></table>
