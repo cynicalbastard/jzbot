@@ -1,6 +1,6 @@
 = the basic syntax =
 The basic syntax of a factoid:
-<font color="blue">~factoid</font> <font color="red">create</font> <font color="lime">Do something</font>
+<font color="blue">~factoid</font> <font color="red">create</font> <font color="orange">factoid name</font> <font color="lime">Do something</font>
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
  * Use <font color="red">create</font> for creating a new factoid, <font color="red">replace</font> to replace an existing factoid or <font color="red">delete</font> to delete it
 Example:
@@ -31,7 +31,7 @@ in ritual the functions are called like this:
 ||{{ || function ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
 ||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
 
-Example:
+Example 1:
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
@@ -50,7 +50,46 @@ the bot acknowledges the factoid
 call the factoid
 the bot executes the function
 lets clean everything up again :)
-and we are done agian :D
+and we are done again :D
 </code>
 </td></tr></table>
 a list with all functions is available via "~help functions" or the [FactoidFunctions Functions list]
+
+Example 2: Now i want to show you my workflow.
+At fist I run a ~help functions to check what could be the function, that I need. Then I run a ~help functions <function name> for further information.
+In this example I want to create a List of members. This was how I searched the function:
+<code>
+<schrottplatz> ~help functions
+
+<Marlen_Jackson> [...]
+ ---> Subpages ("~help functions <pagename>" to show a page):
+ ---> ifneq   ignore   import   indexof   intcompare   isfuture   isop   javadoc   kick
+   lastindexof   length   lget   lgvars   listhttp   listresources   llvars   longrandom   lower   lpvars   lset   match   members   mode   n   numberlist   override 
+  pad   pastebin   pdelete   pget   pset   radix   random   randomint [...]
+
+<schrottplatz> ~help functions members
+<Marlen_Jackson> Syntax: {{members||<channel>}} -- Evaluates to a space-separated list of the nicknames of the people that are currently in <channel>.
+</code>
+<table><tr>
+<td> *Code:* </td><td> *Comment:* </td>
+</tr><tr>
+<td><code>
+<schrottplatz> ~factoid create memberlist
+Members in the channel ##jzbot: {{members||##jzbot}}
+<Marlen_Jackson> Factoid memberlist created.
+<schrottplatz> ~memberlist
+<Marlen_Jackson> Members in the channel ##jzbot: Marlen_Jackson ChanServ MrDudle schrottplatz
+<schrottplatz> ~factoid delete memberlist
+<Marlen_Jackson> Factoid memberlist deleted.
+</code></td>
+<td>
+<code>
+What I did now was actually just pasting "{{members||<channel>}}"
+and changing <channel> to the channel ##jzbot
+the bot acknowledges the factoid
+now I call the factoid
+the bot executes the function... and everything worked great
+lets clean everything up again :)
+and we are done again :D
+</code>
+</td></tr></table>
