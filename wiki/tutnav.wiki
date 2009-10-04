@@ -1,5 +1,5 @@
  * [RitualTutorial#The_Basic_Syntax The Basic Syntax]
-   * [RitualTutorial#Example Example]
+    * [RitualTutorial#Example Example]
  * [RitualTutorial#Functions Functions]
    * [RitualTutorial#Function_Example Function Example]
    * [RitualTutorial#Workflow_Example Workflow Example]
