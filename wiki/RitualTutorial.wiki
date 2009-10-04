@@ -1,9 +1,9 @@
-= The basic syntax =
+=The basic syntax=
 The basic syntax of a factoid:
 <font color="blue">~factoid</font> <font color="red">create</font> <font color="orange">factoid name</font> <font color="lime">Do something</font>
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
  * Use <font color="red">create</font> for creating a new factoid, <font color="red">replace</font> to replace an existing factoid or <font color="red">delete</font> to delete it
-Example:
+===Example===
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
@@ -26,12 +26,12 @@ and we are done :D
 </code>
 </td></tr></table>
 
-= functions =
+=Functions=
 in ritual the functions are called like this:
 ||{{ || function ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
 ||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
 
-Example 1:
+===Example 1===
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
@@ -55,7 +55,8 @@ and we are done again :D
 </td></tr></table>
 a list with all functions is available via "~help functions" or the [FactoidFunctions Functions list]
 
-Example 2: Now i want to show you my workflow.
+===Example 2===
+Now i want to show you my workflow.
 At fist I run a ~help functions to check what could be the function, that I need. Then I run a ~help functions <function name> for further information.
 In this example I want to create a List of members. This was how I searched the function:
 <code>
@@ -99,7 +100,7 @@ There are two different types of Variables in ritual:
  * Channel based variables
  * Global variables
 
-Channel based variables are:
+==Channel based variables==
 <table><tr>
 <td> *Variable:* </td><td> *Description:* </td>
 </tr><tr>
@@ -111,7 +112,7 @@ Channel based variables are:
 These are used as parameters for your function %(x)% would be the (x) Parameter. %(x)-% would be everything after (x).
 </code>
 </td></tr></table>
-Example:
+===Example 1===
 <code>
 <schrottplatz> ~factoid create parameters first parameter: %1% | second parameter: %2% | everything below: %3-%
 <Marlen_Jackson> Factoid parameters created.
@@ -136,7 +137,7 @@ The nick of the bot
 The channel where the factoid was called from / current channel
 </code>
 </td></tr></table>
-Example:
+===Example 2===
 <code>
 <schrottplatz> ~factoid create call Hello %0%. My name is %self%. You are talking in the channel %source%.
 <Marlen_Jackson> Factoid call created.
@@ -145,9 +146,7 @@ Example:
 <schrottplatz> ~factoid delete call
 <Marlen_Jackson> Factoid call deleted.
 </code>
-
-Global variables:
-
+==Global variables==
 Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
 and called using $varname$ or {{get`|``|``<`varname>}}
 
@@ -155,8 +154,7 @@ and called using $varname$ or {{get`|``|``<`varname>}}
 =Calling a factoid through another factoid=
 You can do that using the {{import`|``|``<`factoid>`|``|``<`argument1>||...}}
 You can return values directly or using variables.
-
-Example:
+===Example===
 <code>
 <schrottplatz> ~factoid create return1 {{eval`|``|`%1%+%2%}}
 <Marlen_Jackson> Factoid return1 created.
@@ -172,4 +170,25 @@ Example:
 <Marlen_Jackson> Factoid return1 deleted.
 <schrottplatz> ~factoid delete return2
 <Marlen_Jackson> Factoid return2 deleted.
+</code>
+
+=Tips=
+==Escaping==
+If you have strings, which are used in the normal Ritual language, then you have to escape using a '\'.
+===Example===
+without escaping:
+<code>
+ ~factoid create emoticon >($.$)<
+<Marlen_Jackson> Factoid emoticon created. 
+<schrottplatz> ~emoticon
+<Marlen_Jackson> >()<
+</code>
+with escaping:
+<code>
+<schrottplatz> ~factoid replace emoticon >(\$.\$)<
+<Marlen_Jackson> Factoid emoticon replaced. 
+<schrottplatz> ~emoticon
+<Marlen_Jackson> >($.$)<
+<schrottplatz> ~factoid delete emoticon
+<Marlen_Jackson> Factoid emoticon deleted.
 </code>
