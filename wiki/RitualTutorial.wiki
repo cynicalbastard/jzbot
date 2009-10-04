@@ -93,3 +93,60 @@ lets clean everything up again :)
 and we are done again :D
 </code>
 </td></tr></table>
+
+=Variables=
+There are two different types of Variables in ritual:
+ * Channel based variables
+ * Global variables
+
+Channel based variables are:
+<table><tr>
+<td> *Variable:* </td><td> *Description:* </td>
+</tr><tr>
+<td><code>
+%1% %2% ... or %1-% %2-%
+</code></td>
+<td>
+<code>
+These are used as parameters for your function %(x)% would be the (x) Parameter. %(x)-% would be everything after (x).
+</code>
+</td></tr></table>
+Example:
+<code>
+<schrottplatz> ~factoid create parameters first parameter: %1% | second parameter: %2% | everything below: %3-%
+<Marlen_Jackson> Factoid parameters created.
+<schrottplatz> ~parameters foo bar hello world! how are you?
+<Marlen_Jackson> first parameter: foo | second parameter: bar | everything below: hello world! how are you?
+<schrottplatz> ~factoid delete parameters
+<Marlen_Jackson> Factoid parameters deleted.
+</code>
+
+<table><tr>
+<td> *Variable:* </td><td> *Description:* </td>
+</tr><tr>
+<td><code>
+%0%
+%self%
+%source% / %channel%
+</code></td>
+<td>
+<code>
+The nick of the person who called the function
+The nick of the bot
+The channel where the factoid was called from / current channel
+</code>
+</td></tr></table>
+Example:
+<code>
+<schrottplatz> ~factoid create call Hello %0%. My name is %self%. You are talking in the channel %source%.
+<Marlen_Jackson> Factoid call created.
+<schrottplatz> ~call
+<Marlen_Jackson> Hello schrottplatz. My name is Marlen_Jackson. You are talking in the channel ##jzbot.
+<schrottplatz> ~factoid delete call
+<Marlen_Jackson> Factoid call deleted.
+</code>
+
+Global variables:
+
+Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
+and called using $varname$ or {{get`|``|``<`varname>}}
