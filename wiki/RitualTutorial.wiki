@@ -32,7 +32,7 @@ in ritual the functions are called like this:
 ||{{ || function ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
 ||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
 
-===FunctionExample===
+===Function Example===
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
@@ -56,7 +56,7 @@ and we are done again :D
 </td></tr></table>
 a list with all functions is available via "~help functions" or the [FactoidFunctions Functions list]
 
-===WorkflowExample===
+===Workflow Example===
 Now i want to show you my workflow.
 At fist I run a ~help functions to check what could be the function, that I need. Then I run a ~help functions <function name> for further information.
 In this example I want to create a List of members. This was how I searched the function:
@@ -101,7 +101,7 @@ There are two different types of Variables in ritual:
  * Channel based variables
  * Global variables
 
-==ChannelBasedVariables==
+==Channel Based Variables==
 <table><tr>
 <td> *Variable:* </td><td> *Description:* </td>
 </tr><tr>
@@ -113,7 +113,7 @@ There are two different types of Variables in ritual:
 These are used as parameters for your function %(x)% would be the (x) Parameter. %(x)-% would be everything after (x).
 </code>
 </td></tr></table>
-===VariableExample1===
+===Variable Example 1===
 <code>
 <schrottplatz> ~factoid create parameters first parameter: %1% | second parameter: %2% | everything below: %3-%
 <Marlen_Jackson> Factoid parameters created.
@@ -147,15 +147,15 @@ The channel where the factoid was called from / current channel
 <schrottplatz> ~factoid delete call
 <Marlen_Jackson> Factoid call deleted.
 </code>
-==GlobalVariables==
+==Global Variables==
 Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
 and called using $varname$ or {{get`|``|``<`varname>}}
 
 
-=Call FactoidsUsing A Factoid=
+=Call Factoids Using A Factoid=
 You can do that using the {{import`|``|``<`factoid>`|``|``<`argument1>||...}}
 You can return values directly or using variables.
-===FactoidExample===
+===Factoid Example===
 <code>
 <schrottplatz> ~factoid create return1 {{eval`|``|`%1%+%2%}}
 <Marlen_Jackson> Factoid return1 created.
@@ -175,11 +175,11 @@ You can return values directly or using variables.
 
 =Tips=
 Here a few tips below:
-==TheFunctionlist==
+==The Functionlist==
 At [FactoidFunctions] you can find all available functions.
 ==Escaping==
 If you have strings, which are used in the normal Ritual language, then you have to escape using a '\'.
-===EscapeExample===
+===Escape Example===
 without escaping:
 <code>
  ~factoid create emoticon >($.$)<
@@ -196,9 +196,9 @@ with escaping:
 <schrottplatz> ~factoid delete emoticon
 <Marlen_Jackson> Factoid emoticon deleted.
 </code>
-==ThinkBeforeCoding==
+==Think Before Coding==
 Maybe it sounds stupid but think before you code! If you have no plan you have to change x functions every minute.
-==IRCSupport==
+==IRC Support==
 You can get help at our official channel [irc://irc.freenode.net/##jzbot irc.freenode.net/##jzbot]
 ==Requests==
 You need a factoid function? Just ask in our channel or [http://http://code.google.com/p/jzbot/issues/list report] a request.
