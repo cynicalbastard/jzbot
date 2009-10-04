@@ -61,11 +61,11 @@ In this example I want to create a List of members. This was how I searched the 
 <code>
 <schrottplatz> ~help functions
 
-<Marlen_Jackson> [...]
+<Marlen_Jackson> `[`...`]`
  ---> Subpages ("~help functions <pagename>" to show a page):
  ---> ifneq   ignore   import   indexof   intcompare   isfuture   isop   javadoc   kick
    lastindexof   length   lget   lgvars   listhttp   listresources   llvars   longrandom   lower   lpvars   lset   match   members   mode   n   numberlist   override 
-  pad   pastebin   pdelete   pget   pset   radix   random   randomint [...]
+  pad   pastebin   pdelete   pget   pset   radix   random   randomint `[`...`]`
 
 <schrottplatz> ~help functions members
 <Marlen_Jackson> Syntax: {{members||<channel>}} -- Evaluates to a space-separated list of the nicknames of the people that are currently in <channel>.
