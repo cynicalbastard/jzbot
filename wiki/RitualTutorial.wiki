@@ -196,7 +196,7 @@ with escaping:
 <schrottplatz> ~factoid delete emoticon
 <Marlen_Jackson> Factoid emoticon deleted.
 </code>
-==ThinkBeforeYouCode==
+==ThinkBeforeCoding==
 Maybe it sounds stupid but think before you code! If you have no plan you have to change x functions every minute.
 ==IRCSupport==
 You can get help at our official channel [irc://irc.freenode.net/##jzbot irc.freenode.net/##jzbot]
