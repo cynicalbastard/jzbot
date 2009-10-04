@@ -54,11 +54,11 @@ lets clean everything up again :)
 and we are done again :D
 </code>
 </td></tr></table>
-a list with all functions is available via "~help functions" or the [FactoidFunctions Functions list]
+a list with all functions is available via `~help functions` or the [FactoidFunctions Functions list]
 
 ===Workflow Example===
 Now i want to show you my workflow.
-At fist I run a ~help functions to check what could be the function, that I need. Then I run a ~help functions <function name> for further information.
+At fist I run a `~help functions` to check what could be the function, that I need. Then I run a `~help functions <function name>` for further information.
 In this example I want to create a List of members. This was how I searched the function:
 <code>
 <schrottplatz> ~help functions
