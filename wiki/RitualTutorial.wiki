@@ -86,7 +86,7 @@ Members in the channel ##jzbot: {{members||##jzbot}}
 </code></td>
 <td>
 <code>
-What I did now was actually just pasting `{{members||<channel>}}`
+What I did now was actually just pasting `{{members||<channel>}}` 
 and changing <channel> to the channel ##jzbot
 the bot acknowledges the factoid
 now I call the factoid
