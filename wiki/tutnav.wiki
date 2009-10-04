@@ -4,7 +4,7 @@
                 * [RitualTutorial#FunctionExample]
                 * [RitualTutorial#WorkflowExample]
     * [RitualTutorial#Variables]
-          * [RitualTutorial#Channel based variables]
+          * [RitualTutorial#ChannelBasedVariables]
                 * [RitualTutorial#VariableExample1]
                 * [RitualTutorial#VariableExample2]
           * [RitualTutorial#GlobalVariables]
