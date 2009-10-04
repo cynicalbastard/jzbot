@@ -199,6 +199,6 @@ with escaping:
 ==Think Before Coding==
 Maybe it sounds stupid but think before you code! If you have no plan you have to change x functions every minute.
 ==IRC Support==
-You can get help at our official channel [irc://irc.freenode.net/##jzbot irc.freenode.net/##jzbot]
+You can get help at our official channel <a href="irc://irc.freenode.net/##jzbot">irc.freenode.net/##jzbot</a>
 ==Requests==
 You need a factoid function? Just ask in our channel or [http://http://code.google.com/p/jzbot/issues/list report] a request.
