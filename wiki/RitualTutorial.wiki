@@ -1,4 +1,4 @@
-#sidebar tutnav
+<wiki:toc max_depth="1" />
 =The Basic Syntax=
 The basic syntax of a factoid:
 <font color="blue">~factoid</font> <font color="red">create</font> <font color="orange">factoid name</font> <font color="lime">Do something</font>
