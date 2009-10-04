@@ -1,8 +1,16 @@
-<ul>
-<li>[RitualTutorial#The_Basic_Syntax The Basic Syntax]</li>
-<ul><ul>
-<li>[RitualTutorial#Example Example]</li></ul></ul>
-<li>[RitualTutorial#Functions Functions]</li>
-<ul><ul><li>[RitualTutorial#Function_Example Function Example]</li>
-<li>[RitualTutorial#Workflow_Example Workflow Example]</li></ul></ul>
-<li>[RitualTutorial#Variables Variables]</li><ul><li>[RitualTutorial#Channel_Based_Variables Channel Based Variables]</li><ul><li>[RitualTutorial#Variable_Example_1 Variable Example 1]</li><li>[RitualTutorial#Variable_Example_2 Variable Example 2]</li></ul><li>[RitualTutorial#Global_Variables Global Variables]</li></ul><li>[RitualTutorialCall_Factoids_Using_A_Factoid Call Factoids Using A Factoid]</li><ul><ul><li>[RitualTutorial#Factoid_Example Factoid Example]</li></ul></ul><li>[RitualTutorial#Tips Tips</a></li><ul><li>[RitualTutorial#The_Functionlist The Functionlist]</li><li>[RitualTutorial#Escaping Escaping]</li><ul><li>[RitualTutorial#Escape_Example Escape Example]</li></ul><li>[RitualTutorial#Think_Before_Coding Think Before Coding]</li><li>[RitualTutorial#IRC_Support IRC Support]</li><li>[RitualTutorial#Requests Requests]</li></ul></ul>
+[RitualTutorial#The_Basic_Syntax The Basic Syntax]
+[RitualTutorial#Example Example]
+[RitualTutorial#Functions Functions]
+[RitualTutorial#Function_Example Function Example]
+[RitualTutorial#Workflow_Example Workflow Example]
+[RitualTutorial#Variables Variables]
+[RitualTutorial#Channel_Based_Variables Channel Based Variables][RitualTutorial#Variable_Example_1 Variable Example 1]
+[RitualTutorial#Variable_Example_2 Variable Example 2]
+[RitualTutorial#Global_Variables Global Variables][RitualTutorialCall_Factoids_Using_A_Factoid Call Factoids Using A Factoid][RitualTutorial#Factoid_Example Factoid Example]
+[RitualTutorial#Tips Tips]
+[RitualTutorial#The_Functionlist The Functionlist]
+[RitualTutorial#Escaping Escaping]
+[RitualTutorial#Escape_Example Escape Example]
+[RitualTutorial#Think_Before_Coding Think Before Coding]
+[RitualTutorial#IRC_Support IRC Support]
+[RitualTutorial#Requests Requests]
