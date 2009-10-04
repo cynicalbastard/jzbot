@@ -138,7 +138,7 @@ The nick of the bot
 The channel where the factoid was called from / current channel
 </code>
 </td></tr></table>
-===VariableExample2===
+===Variable Example 2===
 <code>
 <schrottplatz> ~factoid create call Hello %0%. My name is %self%. You are talking in the channel %source%.
 <Marlen_Jackson> Factoid call created.
