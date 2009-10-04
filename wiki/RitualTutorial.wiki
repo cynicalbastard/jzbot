@@ -158,11 +158,11 @@ You can return values directly or using variables.
 
 Example:
 <code>
-<schrottplatz> ~factoid create return1 {{eval||%1%+%2%}}
+<schrottplatz> ~factoid create return1 {{eval`|``|`%1%+%2%}}
 <Marlen_Jackson> Factoid return1 created.
-<schrottplatz> ~factoid create return2 {{set||returnvalue||{{eval||%1%+%2%}}}}
+<schrottplatz> ~factoid create return2 {{set`|``|`returnvalue`|``|`{{eval`|``|`%1%+%2%}}}}
 <Marlen_Jackson> Factoid return2 created.
-<schrottplatz> ~factoid create add Normal return: {{import||return1||%1%||%2%}} Return using a Variable: {{import||return2||%1%||%2%}}$returnvalue$
+<schrottplatz> ~factoid create add Normal return: {{import`|``|`return1`|``|`%1%`|``|`%2%}} Return using a Variable: {{import`|``|`return2`|``|`%1%`|``|`%2%}}$returnvalue$
 <Marlen_Jackson> Factoid add created.
 <schrottplatz> ~add 3 4
 <Marlen_Jackson> Normal return: 7 Return using a Variable: 7
