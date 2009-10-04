@@ -1,4 +1,4 @@
-= the basic syntax =
+= The basic syntax =
 The basic syntax of a factoid:
 <font color="blue">~factoid</font> <font color="red">create</font> <font color="orange">factoid name</font> <font color="lime">Do something</font>
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
@@ -150,3 +150,26 @@ Global variables:
 
 Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
 and called using $varname$ or {{get`|``|``<`varname>}}
+
+
+=Calling a factoid through another factoid=
+You can do that using the {{import`|``|``<`factoid>`|``|``<`argument1>||...}}
+You can return values directly or using variables.
+
+Example:
+<code>
+<schrottplatz> ~factoid create return1 {{eval||%1%+%2%}}
+<Marlen_Jackson> Factoid return1 created.
+<schrottplatz> ~factoid create return2 {{set||returnvalue||{{eval||%1%+%2%}}}}
+<Marlen_Jackson> Factoid return2 created.
+<schrottplatz> ~factoid create add Normal return: {{import||return1||%1%||%2%}} Return using a Variable: {{import||return2||%1%||%2%}}$returnvalue$
+<Marlen_Jackson> Factoid add created.
+<schrottplatz> ~add 3 4
+<Marlen_Jackson> Normal return: 7 Return using a Variable: 7
+<schrottplatz> ~factoid delete add
+<Marlen_Jackson> Factoid add deleted.
+<schrottplatz> ~factoid delete return1
+<Marlen_Jackson> Factoid return1 deleted.
+<schrottplatz> ~factoid delete return2
+<Marlen_Jackson> Factoid return2 deleted.
+</code>
