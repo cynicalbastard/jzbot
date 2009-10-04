@@ -4,7 +4,7 @@ The basic syntax of a factoid:
 <font color="blue">~factoid</font> <font color="red">create</font> <font color="orange">factoid name</font> <font color="lime">Do something</font>
  * Make sure which trigger your bot used to (for example "~" ">" "`_`")
  * Use <font color="red">create</font> for creating a new factoid, <font color="red">replace</font> to replace an existing factoid or <font color="red">delete</font> to delete it
-===BasicExample===
+===muh===
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
