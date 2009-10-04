@@ -9,7 +9,7 @@
    * [RitualTutorial#Variable_Example_2 Variable Example 2]
   * [RitualTutorial#Global_Variables Global Variables] 
  * [RitualTutorial#Call_Factoids_Using_A_Factoid Call Factoids Using A Factoid]
-   * [RitualTutorial#Factoid_Example Factoid Example]
+    * [RitualTutorial#Factoid_Example Factoid Example]
  * [RitualTutorial#Tips Tips]
   * [RitualTutorial#The_Functionlist The Functionlist]
   * [RitualTutorial#Escaping Escaping]
