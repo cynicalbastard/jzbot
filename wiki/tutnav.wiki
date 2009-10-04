@@ -17,3 +17,22 @@
   * [RitualTutorial#ThinkBeforeCoding]
   * [RitualTutorial#IRCSupport]
   * [RitualTutorial#Requests]
+    * [RitualTutorial#The_Basic_Syntax The Basic Syntax]
+                + Example
+    * Functions
+                + Function Example
+                + Workflow Example
+    * Variables
+          o Channel Based Variables
+                + Variable Example 1
+          +
+          o Global Variables
+    * Call Factoids Using A Factoid
+                + Factoid Example
+    * Tips
+          o The Functionlist
+          o Escaping
+                + Escape Example
+          o Think Before Coding
+          o IRC Support
+          o Requests
