@@ -148,12 +148,12 @@ The channel where the factoid was called from / current channel
 <Marlen_Jackson> Factoid call deleted.
 </code>
 ==Global Variables==
-Global variables can be set by yourself using the `{{set`|``|``<`varname>`|``|``<`value>}}`
-and called using `$varname$` or `{{get`|``|``<`varname>}}`
+Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
+and called using `$varname$` or {{get`|``|``<`varname>}}
 
 
 =Call Factoids Using A Factoid=
-You can do that using the `{{import`|``|``<`factoid>`|``|``<`argument1>||...}}`
+You can do that using the {{import`|``|``<`factoid>`|``|``<`argument1>||...}}
 You can return values directly or using variables.
 ===Factoid Example===
 <code>
@@ -178,7 +178,7 @@ Here a few tips below:
 ==The Functionlist==
 At [FactoidFunctions] you can find all available functions.
 ==Escaping==
-If you have strings, which are used in the normal Ritual language, then you have to escape using a `\`.
+If you have strings, which are used in the normal Ritual language, then you have to escape using a '\'.
 ===Escape Example===
 without escaping:
 <code>
