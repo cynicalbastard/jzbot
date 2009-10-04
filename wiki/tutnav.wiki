@@ -1,4 +1,4 @@
- * [RitualTutorial#BasicSyntax]
+ * [RitualTutorial#"The Basic Syntax"]
   * [RitualTutorial#BasicExample]
  * [RitualTutorial#Functions]
   * [RitualTutorial#FunctionExample]
