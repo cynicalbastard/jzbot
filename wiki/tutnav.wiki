@@ -14,6 +14,6 @@
           * [RitualTutorial#Functionlist]
           * [RitualTutorial#Escaping]
                 * [RitualTutorial#EscapeExample]
-          * [RitualTutorial#ThinkBeforeYouCode]
+          * [RitualTutorial#ThinkBeforeCoding]
           * [RitualTutorial#IRCSupport]
           * [RitualTutorial#Requests]
