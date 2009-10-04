@@ -1,0 +1,19 @@
+    * The basic syntax
+                * Example
+    * Functions
+                * Example 1
+                * Example 2
+    * Variables
+          * Channel based variables
+                * Example 1
+                * Example 2
+          * Global variables
+    * Calling a factoid through another factoid
+                * Example
+    * Tips
+          * The functionlist
+          * Escaping
+                * Example
+          * Think before you code
+          * Ask in the IRC
+          * Factoid function request
