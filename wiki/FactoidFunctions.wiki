@@ -23,6 +23,10 @@ This function is deprecated, and "\c" should be used instead.
 ==cascade==
  Syntax: {{cascade`||``<`regex>`||``<`factoid>`||``<`argument1>`||`...}} -- Identical to the {{import}} function, with one exception: any local variable in this factoid whose name matches the regular expression `<`regex> will be handed down to `<`factoid> when it is run. Note that changes to the variable inside that factoid will not prepegate up to this factoid. Also, special local variables (such as
 %1% or %self%) can't be overriden with this function, meaning that they will be set to whatever they would be had {{import}} been used instead of {{cascade}}. As an example, "{{import`||`testfact`||`something}}" would function exactly the same as "{{lset`||`1`||`something}}{{cascade`||`1`||`testfact}}". However, using "{{lset`||`1`||`something}}{{cascade`||`1`||`testfact`||`other}}", "testfact" would have %1% equal to "other", not "something".
+==catch==
+ Syntax: {{catch`||``<`action>`||``<`prefix>`||``<`onerror>}} -- Evaluates to `<`action>. If `<`action> ends up throwing an exception, `<`onerror> is run instead. A few local variables are set if an error does occur. Their names are `<`prefix>-class, which is the name of the class of the error (this is usually org.opengroove.jzbot.fact.FactoidException), `<`prefix>-message, 
+which is the error message of the exception, and `<`prefix>-root-class and `<`prefix>-root-message, which are the class and message of the root cause of the exception. This function will catch all errors (including too-many-message and too-many-import errors) except an error indicating that the factoid used up too much time, for the 
+obvious reason that this could lead to factoids that never stop running. This will not allow for circumvention of the message limit, however, as each successive invocation of {{sendmessage}} would just throw another error instead of sending a message if the quota has been exceeded.
 ==char==
  Syntax: {{char`||``<`number>}} -- Evaluates to a single character, which is the ASCII character denoted by the base-10 number `<`number>. For example, {{char`||`32}} results in " ", {{char`||`49}} results in "1", and {{char`||`65}} results in "A".
 ==compare==
@@ -43,7 +47,7 @@ The result of this evaluation should be negative, 0, or positive if the first it
  Syntax: {{error`||``<`message>}} -- Causes a syntax error to be reported with the specified message.
 ==escape==
  Syntax: {{escape`||``<`text>}} -- Escapes `<`text> with backslashes, "\n", and such, so that the resulting text, when embedded directly within a factoid, would evaluate to `<`text>. For example, all "|" characters, "{" characters, and "}" characters are prefixed with a "\". `<`text> can also contain non-ascii-visible characters, and these will 
-be replaced with a call to the {{char}} function.
+be replaced with a call to the {{char}} function. Currently, this doesn't correctly support UTF-8.
 ==eval==
  Syntax: {{eval`||``<`toeval>}} or {{eval`||``<`engine>`||``<`toeval>}} -- Evaluates `<`toeval> as a mathematical equation. Engine specifies the engine to use. Each engine exhibits different properties and equation syntax.
 Allowed engines are (separated by a space): jeplite caltech jeval
@@ -102,6 +106,8 @@ The true values are y, yes, t, true, 1, and 1.0, and the false values are n, no,
 ==isop==
  Syntax: {{isop`||``<`channel>`||``<`nick>}} -- Evaluates to "1" if the nick specified is a channel operator at this channel or "0" if the nick specified is not a channel operator at this channel. %self% can be used to get the bot's own nick, so {{isop`||`%self%}} would indicate whether the bot has operator privileges at this channel.
 `<`channel> means the channel to check at. If it's not present, then the channel that this factoid is being run at will be used.
+==isresource==
+ Syntax: {{isresource`||``<`name>}} -- Returns 1 if `<`name> denotes a valid resource (IE {{getresource`||``<`name>}} could be called without an error occuring), or 0 if `<`name> does not denote a valid resource.
 ==javadoc==
  
 ==kick==
@@ -188,7 +194,7 @@ Currently, empty values at the end of the list are ignored. This means that in t
  Syntax: {{splitindex`||``<`regex>`||``<`text>`||``<`max>`||``<`index>}} -- Splits `<`text> around the regular expression `<`regex> to a maximum length of `<`max>, and then returns the `<`index>th element in that new list. For example, {{splitindex`||`_`||`first_second_third_fourth`||`10`||`3}} evaluates to "third", and {{splitindex`||`_`||`first_second_third_fourth`||`2`||`2}} evaluates to "second_third_fourth".
 In other words, all tokens after (and including) the `<`max>th token are concatenated (split by the delimiter that `<`regex> matched) and used as the last token.
 ==starthttp==
- Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d2f76d736 for more info.
+ Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d469ad462 for more info.
 ==stophttp==
  Syntax: {{stophttp`||``<`port>}} -- Stops an HTTP server running on the specified port. See {{starthttp}} for more information on what HTTP servers are.
 ==substring==
