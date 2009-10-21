@@ -3,6 +3,12 @@
 =Functions= 
 ==action==
  Syntax: {{action}} -- Causes the factoid to appear using "/me". It essentially causes the bot to do the equivalent of prepending the message with "/me" on a typical IRC client.
+==addregex==
+ Syntax: {{addregex`||``<`desc>}} -- Adds a regex to the current channel. This acts as if "regex add `<`desc>" has been run at this channel.
+==afterpad==
+ Syntax: {{afterpad`||``<`number>`||``<`char>`||``<`value>}} -- Evaluates to `<`value>, but with `<`char> (which must be a single character) appended until the resulting length is at least equal to `<`number>. For example, {{pad`||`7`||`0`||`1234}} would evaluate to "1234000".
+==args==
+ Syntax: {{args`||``<`regex>`||``<`text>}} -- Splits `<`text> around the regular expression `<`regex>, then runs the function named by the first string in this sublist, passing the rest of the strings as arguments. For example, "{{args`||`,`||`sendmessage,%0%,Hello}}" would function exactly the same as "{{sendmessage`||`%0%`||`Hello}}".
 ==ascii==
  Syntax: {{ascii`||``<`char>}} -- Evaluates to the numerical code that represents the ascii character `<`char>. For example, {{ascii`||` }} results in "32", {{ascii`||`1}} results in "49", and {{ascii`||`A}} results in "65". An error will occur if `<`char> is not a single character.
 ==b==
@@ -27,6 +33,8 @@ This function is deprecated, and "\c" should be used instead.
  Syntax: {{catch`||``<`action>`||``<`prefix>`||``<`onerror>}} -- Evaluates to `<`action>. If `<`action> ends up throwing an exception, `<`onerror> is run instead. A few local variables are set if an error does occur. Their names are `<`prefix>-class, which is the name of the class of the error (this is usually org.opengroove.jzbot.fact.FactoidException), `<`prefix>-message, 
 which is the error message of the exception, and `<`prefix>-root-class and `<`prefix>-root-message, which are the class and message of the root cause of the exception. This function will catch all errors (including too-many-message and too-many-import errors) except an error indicating that the factoid used up too much time, for the 
 obvious reason that this could lead to factoids that never stop running. This will not allow for circumvention of the message limit, however, as each successive invocation of {{sendmessage}} would just throw another error instead of sending a message if the quota has been exceeded.
+==cget==
+ Syntax: {{cget`||``<`varname>}} -- Evaluates to the value of the specified chain variable.
 ==char==
  Syntax: {{char`||``<`number>}} -- Evaluates to a single character, which is the ASCII character denoted by the base-10 number `<`number>. For example, {{char`||`32}} results in " ", {{char`||`49}} results in "1", and {{char`||`65}} results in "A".
 ==compare==
@@ -39,6 +47,8 @@ The result of this evaluation should be negative, 0, or positive if the first it
  Syntax: {{contains`||``<`substring>`||``<`string>}} -- Evaluates to 1 if `<`string> contains `<`substring> anywhere in it, or 0 if it doesn't.
 ==count==
  Syntax: {{count`||``<`regex>`||``<`string>}} -- Splits `<`string> around `<`regex>, and then counts the number of items in this list. This essentially counts how many times `<`regex> appears in `<`string>, and then returns this number plus 1, or 0 if `<`string> is empty. Trailing blank items are not counted.
+==cset==
+ Syntax: {{cset`||``<`varname>`||``<`value>}} -- Sets the specified chain variable to the specified value. Chain variables are almost exactly the same as local variables; the only difference is that when a factoid imports another factoid, both factoids (and any that are in turn imported by the imported factoid) use the same set of chain variables.
 ==dateformat==
  Syntax: {{dateformat`||``<`value>}} -- Formats `<`value>, which should be a number of milliseconds since Midnight January 1, 1970 UTC, as a human-readable date string. If you want a custom date format instead of the default one that this function provides, consider using {{format}} with a custom format string instead of {{dateformat}}.
 ==delete==
@@ -51,34 +61,48 @@ be replaced with a call to the {{char}} function. Currently, this doesn't correc
 ==eval==
  Syntax: {{eval`||``<`toeval>}} or {{eval`||``<`engine>`||``<`toeval>}} -- Evaluates `<`toeval> as a mathematical equation. Engine specifies the engine to use. Each engine exhibits different properties and equation syntax.
 Allowed engines are (separated by a space): jeplite caltech jeval
+==exact==
+ Syntax: {{exact`||``<`factoid>`||``<`arg1>`||``<`arg2>`||`...}} -- Same as {{import}}, but imports the factoid at exactly the same scope as this factoid. If this is a global factoid, then this will end up calling the specified global factoid even if an equivalent, channel-specific factoid exists.
 ==extensiontype==
  Syntax: {{extensiontype`||``<`name>}} -- Evaluates to the content type of a number of known file extensions. If name does not contain any "." characters, it is taken to be the name of a file extension. If it does contain "." characters, the extension is taken to be everything after the last "." character.
 For example, {{extensiontype`||`txt}} and {{extensiontype`||`myfile.txt}} both evaluate to "text/plain", and {{extensiontype`||`gif}} and {{extensiontype`||`something.gif}} both evaluate to "image/gif".
 ==factoverride==
  Syntax: {{factoverride}} -- Only useful in a factoid called by a regex. Indicates that no other factoids should be run after this regex. This differs from {{override}} in that other regexes will still be run, but actual factoids will not. As with {{override}}, this does not block commands from running.
+==facts==
+ Syntax: {{facts`||``<`scope>}} -- Returns a space-separated list of the names of all factoids in the scope that this factoid is in. If `<`scope> is "channel", and this is a global factoid, then this will list channel-specific factoids at whatever channel this is being run at. Otherwise, `<`scope> has no effect. `<`scope> is optional.
 ==filter==
  Syntax: {{filter`||``<`regex>`||``<`string>`||``<`condition>`||``<`delimiter>}} -- Splits `<`string> around the regular expression `<`regex>, then reconstructs a string made up of these strings, but delimited by `<`delimiter>. Only substrings that match the regular expression `<`condition> will be included. 
 For example, {{filter`||`,`||`first,second,third,fourth`||`^[^i]*$`||`-}} would evaluate to "second-fourth".
 ==firstvar==
- Syntax: {{firstvar`||``<`varname>`||``<`firstarg>`||``<`secondarg>`||`...}} -- Sets the local variable `<`varname> to be the first argument that comes after it whose value does not evaluate to the empty string, ignoring whitespace and newlines.
+ Syntax: {{firstvar`||``<`varname>`||``<`arg1>`||``<`arg2>`||`...}} -- Sets the local variable `<`varname> to be the first argument that comes after it whose value does not evaluate to the empty string, ignoring whitespace and newlines.
 ==format==
  Syntax: {{format`||``<`formatstring>`||``<`arg1>`||``<`arg2>`||`...}} -- Applies C-style printf formatting to `<`formatstring> with `<`arg1>, `<`arg2>, etc. being the format arguments. This could be considered an equivalent to C's printf(`<`formatstring>,`<`arg1>,`<`arg2>,...), but output, instead of being sent to stdout, is put into the factoid.
 Arguments that can be parsed as whole numbers are passed to the formatting method as 64-bit signed integers. Arguments that can be parsed as fractional numbers (including numbers with a decimal point but that only have zeros after it) are passed as 64-bit floating point numbers. Other arguments are passed as strings.
 ==future==
  Syntax: {{future`||``<`key>`||``<`delay>`||``<`factoid>`||``<`argument1>`||`...}} -- Schedules a factoid to be run some time in the future. `<`key> is a unique key. Whenever an event is scheduled for a particular key, any events that have been scheduled for that key but not yet run are canceled. `<`delay> is the number of seconds in the future that the factoid should be run.
 `<`factoid> is the name of the factoid to run. `<`argument1>, `<`argument2>, etc. are arguments to pass to the factoid.
+==futures==
+ Syntax: {{futures}} -- Evaluates to a newline-separated list of the keys of all future tasks scheduled with {{future}} that have not yet been run.
 ==get==
  Syntax: {{get`||``<`varname>}} -- Gets the value of the global variable named `<`varname>.
 ==getresource==
  Syntax: {{getresource`||``<`name>}} -- Gets the resource by the specified name. Resources are files present in the "resources" folder under the bot's main folder. If the resource's content is longer than 100KB, an error will occur.
+==global==
+ Syntax: {{global`||``<`factoid>`||``<`arg1>`||``<`arg2>`||`...}} -- Same as {{import}}, but imports the specified global factoid only. This acts as if there were no channel-specific factoids named `<`factoid>, even if one does exist.
 ==google==
  Syntax: {{google`||``<`search>}} -- Uses the Google search engine to search for `<`search>, and returns the results with each result separated with a "|" character. Each result is made up of the URL for that result, a space, and a summary of that result.
+==hash==
+ Syntax: {{hash`||``<`text>}} -- Computes a 32-character hash of the text specified. Specifically, the hash is the first 32 characters of a signed base-16 conversion of the bytes of the SHA-512 hash of `<`text>. The resulting text is guaranteed to be exactly 32 characters in length.
 ==help==
  Syntax: {{help`||``<`page>}} -- Evaluates to the contents of the specified help page. `<`page> should be a page formatted so that sending "help `<`page>" to the bot in a pm would get the relevant help page. The resulting help page can contain newlines. If the specified help page does not exist, {{help}} evaluates to nothing.
 {{help`||`}} evaluates to the contents of the top level help page (IE the one that you see if you pm "help" to the bot). Also, the literal string "%HELPCMD" may appear in the result, which should be translated to "~help" or "/msg Marlen_Jackson help", depending on where the message was sent from.
 ==helplist==
  Syntax: {{helplist`||``<`page>}} -- Evaluates to a space-separated list of all subpages of the help page `<`page>. This also means that you can get a space-separated list of all functions allowed in factoids by using {{helplist`||`functions}}. {{helplist`||`}} evaluates to a list of top-level help pages (IE those that you would see 
 if you sent "help" in a pm to the bot).
+==htmldecode==
+ Syntax: {{htmldecode`||``<`text>}} -- Decodes all HTML-escaped characters in the specified text. This is the opposite of {{htmlencode}}.
+==htmlencode==
+ Syntax: {{htmlencode`||``<`text>}} -- Escapes all HTML special characters in `<`text>. For example, "`<`" gets changed to "&lt;".
 ==i==
  Syntax: {{i}} -- Inserts the IRC reverse character, which, depending on the client, either reverses the foreground and background colors or shows text as italic.
 This function is deprecated, and "\i" should be used instead.
@@ -87,10 +111,14 @@ This function is deprecated, and "\i" should be used instead.
 ==if==
  Syntax: {{if`||``<`condition>`||``<`trueaction>`||``<`falseaction>}} -- Evalutes to `<`trueaction> if `<`condition> is one of the "true" values, and `<`falseaction> if `<`condition> is one of the "false" values. If `<`condition> is neither a true value nor a false value, an error occurs.
 The true values are y, yes, t, true, 1, and 1.0, and the false values are n, no, f, false, 0, and 0.0. These values are case-insensitive. `<`falseaction> is also optional.
+==ife==
+ Syntax: {{ife`||``<`compare>`||``<`trueaction>`||``<`falseaction>}} -- Evaluates to `<`trueaction> if `<`compare> is either empty or made up only of whitespace, or `<`falseaction> if `<`compare> is not empty and is not made up entirely of whitespace. `<`falseaction> is optional, and if it's not present {{ife}} will act as if `<`falseaction> were empty. This function is the opposite of {{ifne}}.
 ==ifeq==
  Syntax: {{ifeq`||``<`compare1>`||``<`compare2>`||``<`trueaction>`||``<`falseaction>}} -- Evaluates to `<`trueaction> if `<`compare1> is the same as `<`compare2>, ignoring case, or `<`falseaction> if they are not equal. `<`falseaction> is optional, and if not present {{ifeq}} will act as if `<`falseaction> were empty. This function is essentially the opposite of {{ifneq}}.
 ==ifjoined==
  Syntax: {{ifjoined`||``<`nick>`||``<`trueaction>`||``<`falseaction>}} -- Evaluates to `<`trueaction> if the user `<`nick> is currently a member of the channel that the factoid is being run on, and `<`falseaction> if the user is not currently a member of that channel or if the user is offline. `<`falseaction> is optional.
+==ifne==
+ Syntax: {{ifne`||``<`compare>`||``<`trueaction>`||``<`falseaction>}} -- Evaluates to `<`trueaction> if `<`compare> is not empty and is not made up only of whitespace, or `<`falseaction> if `<`compare> is empty or made up entirely of whitespace. `<`falseaction> is optional, and if it's not present {{ifne}} will act as if `<`falseaction> were empty. This function is the opposite of {{ife}}.
 ==ifneq==
  Syntax: {{ifneq`||``<`compare1>`||``<`compare2>`||``<`trueaction>`||``<`falseaction>}} -- Evaluates to `<`trueaction> if `<`compare1> is not the same as `<`compare2>, ignoring case, or `<`falseaction> if they are equal. `<`falseaction> is optional, and if not present {{ifneq}} will act as if `<`falseaction> were empty. This function is essentially the opposite of {{ifeq}}.
 ==ignore==
@@ -101,19 +129,34 @@ The true values are y, yes, t, true, 1, and 1.0, and the false values are n, no,
  Syntax: {{indexof`||``<`substring>`||``<`string>`||``<`from>}} -- Evaluates to the index within `<`string> that `<`substring> first occurs, or -1 if `<`substring> isn't present anywhere within `<`string>. `<`from> is optional, and if it's present it specifies an index that the search will begin at.
 ==intcompare==
  Syntax: {{intcompare`||``<`first>`||``<`second>`||``<`if>}} -- Same as {{compare}}, but compares whole numbers for numerical ordering. For example, {{intcompare`||`1`||`3}} evaluates to -1, {{intcompare`||`7`||`12}} evaluates to -1 (whereas {{compare`||`7`||`12}} would evaluate to 1), and {{intcompare`||`13`||`8}} evaluates to 1. `<`if> is optional, and defaults to false.
+==interval==
+ Syntax: {{interval`||``<`seconds>}} -- Formats the specified number of seconds as an interval. For example, {{interval`||`137}} would evaluate to "1 minute 17 seconds". This function supports all the way up to years (meaning {{interval`||`31536000}} evaluates to "1 year").
+==isadmin==
+ Syntax: {{isadmin`||``<`channel>`||``<`nick>}} -- Exactly the same as {{isop}}, but checks to see if the user is a channel admin. On most servers, this is mode +a.
+==isfounder==
+ Syntax: {{isfounder`||``<`channel>`||``<`nick>}} -- Exactly the same as {{isop}}, but checks to see if the user is a channel founder. On most servers, this is mode +q.
 ==isfuture==
  Syntax: {{isfuture`||``<`key>}} -- Evaluates to 1 if there is currently a scheduled future task with the key `<`key> that has not run yet, or 0 if there is no such scheduled future task.
+==ishalfop==
+ Syntax: {{ishalfop`||``<`channel>`||``<`nick>}} -- Exactly the same as {{isop}}, but checks to see if the user is a channel halfop. On most servers, this is mode +h.
+==isinrange==
+ Syntax: {{isinrange`||``<`number>`||``<`min>`||``<`max>}} -- Checks to see if `<`number> is greater than or equal to `<`min> and less than or equal to `<`max>. If `<`number> is not within this range, or if `<`number> is not a whole integer (or if it's not a number at all), then {{isinrange}} evaluates to 0. Otherwise, {{isinrange}} evaluates to 1.
 ==isop==
  Syntax: {{isop`||``<`channel>`||``<`nick>}} -- Evaluates to "1" if the nick specified is a channel operator at this channel or "0" if the nick specified is not a channel operator at this channel. %self% can be used to get the bot's own nick, so {{isop`||`%self%}} would indicate whether the bot has operator privileges at this channel.
 `<`channel> means the channel to check at. If it's not present, then the channel that this factoid is being run at will be used.
 ==isresource==
  Syntax: {{isresource`||``<`name>}} -- Returns 1 if `<`name> denotes a valid resource (IE {{getresource`||``<`name>}} could be called without an error occuring), or 0 if `<`name> does not denote a valid resource.
+==isvoiced==
+ Syntax: {{isvoiced`||``<`channel>`||``<`nick>}} -- Exactly the same as {{isop}}, but checks to see if the user is voiced. On most servers, this is mode +v.
 ==javadoc==
- 
+ Syntax: {{javadoc`||``<`action>`||``<`desc>}} -- Performs a javadoc-related action on a class or method descriptor `<`desc>. `<`desc> can be one of "`<`package>.`<`class>", "`<`class>" (which will only work if there is only one class named `<`class> in the javadoc tree that this command searches), "`<`package>.`<`class>.`<`method>", or "`<`class>.`<`method>". `<`method> is the name of a method, with
+argument types enclosed with parentheses at the end. All subpages of this page are different actions that you can use for `<`action>, and each subpage describes what that action does.
 ==kick==
  Syntax: {{kick`||``<`nick>`||``<`reason>}} -- Kicks the specified nickname off of the current channel. If the bot is not an op at the channel, this function does nothing. `<`reason> is optional, and the bot's name will be used as the reason if no reason is provided.
 ==lastindexof==
  Syntax: {{lastindexof`||``<`substring>`||``<`string>`||``<`from>}} -- Evaluates to the last index within `<`string> that `<`substring> occurs, or -1 if `<`substring> isn't present anywhere within `<`string>. `<`from> is optional, and if it's present it specifies an index that the search will begin at (the search goes backward, so `<`from> would be the maximum index that this function could evaluate to).
+==lcvars==
+ Syntax: {{lcvars`||``<`regex>}} -- Same as {{lgvars}} but for chain variables instead of global variables.
 ==length==
  Syntax: {{length`||``<`value>}} -- Evaluates to the number of characters that are in `<`value>. For example, {{length`||`hello}} evaluates to "5", and {{length`||`hello world}} evaluates to "11".
 ==lget==
@@ -127,6 +170,10 @@ The true values are y, yes, t, true, 1, and 1.0, and the false values are n, no,
  Syntax: {{listresources}} -- Returns a forward-slash-separated list of resources available to the bot. See {{getresource}} for information on what a resource is.
 ==llvars==
  Syntax: {{llvars`||``<`regex>}} -- Same as {{lgvars}} but for local variables instead of global variables.
+==logs==
+ Syntax: {{logs`||``<`max>}} -- Returns the last few messages that were sent at this channel. The resulting log events will be separated by a newline character. Each line is of the format `<`action> `<`time> `<`source> `<`details>. `<`action> is the action that occured, which is one of "mode", "kick", 
+"joined", "left", "nick", "message", or "action" right now. `<`time> is the number of milliseconds since the epoch. `<`source> is the nick that caused the action to occur. `<`details> varies depending on the action. For mode, details is the IRC-format mode string that happened, such as "+o jcp". For kick, details is the name of the person that was kicked, a space, and the reason that the person was kicked.
+For joined, details is "username@host" for that user. For left, details is empty. For nick, details is the new nick of the user. For action and message, details is the action or message sent by that user. For topic, details is the new topic of the channel.
 ==longrandom==
  Syntax: {{longrandom}} -- Generates a random string of digits. The length of this string is generally around 40 characters, and is guaranteed not to be longer than 42 characters. This is intended for instances where some sort of unique ID is needed.
 ==lower==
@@ -171,8 +218,12 @@ For example, {{numberlist`||`1`||`5}} evaluates to "1 2 3 4 5", {{numberlist`||`
  Syntax: {{randomsplit`||``<`text>`||``<`delimiter>`||``<`regex>}} -- Splits `<`text> around the delimiter `<`delimiter> (which is a regular expression), and then chooses one of the resulting strings at random and evaluates to that string. If `<`regex> is present (`<`regex> is entirely optional), then only strings that exactly match `<`regex> will be considered for random choosing.
 ==readpaste==
  Syntax: {{readpaste`||``<`pasteurl>}} -- Reads a pastebin post made at http://pastebin.com. Currently, this only supports reads from pastebin.com itself, and does not support reads from custom pastebin domains (like http://java.pastebin.com). I'm planning on adding such support in a future version of the bot.
+==remaining==
+ Syntax: {{remaining`||``<`key>}} -- Evaluates to the number of milliseconds left before the future whose key is `<`key> will run, or the empty string if there is no future with the specified key.
 ==replace==
  Syntax: {{replace`||``<`mode>`||``<`text>`||``<`search>`||``<`replacement>}} -- Replaces `<`search> in the text `<`text> with `<`replacement> if `<`mode> is "text", or replaces any string that matches the regular expression `<`search> in the text `<`text> with `<`replacement> (which can contain back references) if `<`mode> is "regex". `<`mode> can be omitted, and will default to regex.
+==rmself==
+ Syntax: {{rmself}} -- Deletes this factoid. This can be used for one-time factoids, such as post-install configuration factoids for factpacks.
 ==run==
  Syntax: {{run`||``<`factoid>`||``<`argument1>`||`...}} -- Runs the specified factoid without actually importing it. This function therefore evaluates to nothing. This is pretty much only useful when the factoid in question has useful side effects, like setting a global variable. `<`factoid> is the name of the factoid, and `<`argument1>, `<`argument2>, etc. are the arguments to be passed to the factoid.
 ==sendaction==
@@ -189,12 +240,14 @@ length to 512 characters), then the message is split exactly where a delimiter w
 ==split==
  Syntax: {{split`||``<`regex>`||``<`string>`||``<`varname>`||``<`action>`||``<`delimiter>}} -- Splits `<`string> into a list of strings around the regular expression `<`regex>, then evaluates `<`action> once for each item in the list of strings, with the local variable `<`varname> set to the current item in the list. {{split}} then evaluates to what each of the evaluations of `<`action> evaluated to, separated by `<`delimiter>.
 Bear in mind that backslashes in regular expressions need to be double-escaped, since the factoid language treats back slashes specially. As an example, {{split`||`\\.`||`first.second.third`||`thevalue`||`This is the %thevalue%`||` -- }} would result in "This is the first -- This is the second -- This is the third". `<`delimiter> is optional.
-Currently, empty values at the end of the list are ignored. This means that in the above example, if "first.second.third" were replaced with "first.second.third...", the output would still be the same. {{split}} can be used with `<`string> being the {{numberlist}} function to effectively create a for loop.
+Currently, empty values at the end of the list are ignored. This means that in the above example, if "first.second.third" were replaced with "first.second.third...", the output would still be the same. {{split}} can be used with `<`string> being the {{numberlist}} function to effectively create a for loop. Also, if `<`string> is empty, `<`action> is not evaluated.
+==splitchars==
+ Syntax: {{splitchars`||``<`text>`||``<`delimiter>}} -- Evaluates to `<`text>, but with `<`delimiter> inbetween each character in `<`text>. For example, "{{splitchars`||`hello`||`-}}" results in "h-e-l-l-o".
 ==splitindex==
  Syntax: {{splitindex`||``<`regex>`||``<`text>`||``<`max>`||``<`index>}} -- Splits `<`text> around the regular expression `<`regex> to a maximum length of `<`max>, and then returns the `<`index>th element in that new list. For example, {{splitindex`||`_`||`first_second_third_fourth`||`10`||`3}} evaluates to "third", and {{splitindex`||`_`||`first_second_third_fourth`||`2`||`2}} evaluates to "second_third_fourth".
 In other words, all tokens after (and including) the `<`max>th token are concatenated (split by the delimiter that `<`regex> matched) and used as the last token.
 ==starthttp==
- Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d469ad462 for more info.
+ Syntax: {{starthttp`||``<`port>`||``<`factoid>}} -- Starts an HTTP server on the specified port. See http://pastebin.com/d49670e40 for more info.
 ==stophttp==
  Syntax: {{stophttp`||``<`port>}} -- Stops an HTTP server running on the specified port. See {{starthttp}} for more information on what HTTP servers are.
 ==substring==
@@ -204,6 +257,10 @@ In other words, all tokens after (and including) the `<`max>th token are concate
 `<`default> is entirely optional. If it's not present, and none of the `<`test> arguments match `<`value>, then the switch function will evaluate to nothing. For example, {{switch`||`2`||`1`||`first`||`2`||`second`||`3`||`third`||`missing}} would evaluate to "second", and {{switch`||`5`||`1`||`first`||`2`||`second`||`3`||`third`||`missing}} would evaluate to "missing".
 ==timems==
  Syntax: {{timems}} -- Returns the server's current time in milliseconds since January 1, 1970 Midnight UTC.
+==topic==
+ Syntax: {{topic}} or {{topic`||``<`newtopic>}} -- If used without any arguments, evaluates to the current channel's topic. If used with one argument, sets the current channel's topic to be `<`newtopic>. The bot must be a channel operator on most channels before this can be run.
+==trigger==
+ Syntax: {{trigger}} or {{trigger`||``<`new>}} -- When invoked as {{trigger}}, evaluates to the current channel's trigger. When invoked as {{trigger`||``<`new>}}, sets the current channel's trigger to `<`new>. If there isn't a current channel (IE this is a global factoid and the user pm'ed us), then this does nothing and evaluates to nothing.
 ==trim==
  Syntax: {{trim`||``<`text>}} -- Removes all leading and trailing whitespace from `<`text>.
 ==type==
@@ -223,7 +280,7 @@ This function is deprecated, and "\u" should be used instead.
 ==urlget==
  Syntax: {{urlget`||``<`url>`||``<`mode>`||``<`prefix>}} -- Gets the page at the specified url. `<`url> is the url to get. This currently must only be an http or https url. `<`mode> is the mode to use, which is either "text" or "binary". TODO: binary hexcodes bytes separated by pipes
 ==wait==
- Syntax: {{wait`||``<`duration>}} -- Waits `<`duration> milliseconds before continuing. The bot has a built-in timer that won't let a factoid run longer than 20 seconds, so don't make `<`duration> longer than that.
+ Syntax: {{wait`||``<`duration>}} -- Waits `<`duration> milliseconds before continuing. The bot has a built-in timer that won't let a factoid run longer than 30 seconds, so don't make `<`duration> longer than that.
 ==weather==
  Syntax: {{weather`||``<`zipcode>`||``<`prefix>}} -- Gets information on the current weather conditions for `<`zipcode> by contacting the WeatherBug and Yahoo servers. Weather information is then placed in a number of different local variables, each prefixed with `<`prefix> to avoid conflicting variable names. `<`prefix> is optional, and will default to nothing (IE no prefix) if not present.
 [FactoidFunctions Back to top]
