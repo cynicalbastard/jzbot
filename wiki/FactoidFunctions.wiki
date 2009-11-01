@@ -1,3 +1,4 @@
+#sidebar functionlist
 <wiki:comment>Paste this into the "FactoidFunctions" page. Dont forget the Navigation (run ~jzwikinav)</wiki:comment>
 =Functions= 
 ==action==
