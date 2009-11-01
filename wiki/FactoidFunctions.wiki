@@ -1,4 +1,3 @@
-<wiki:gadget url="http://www.ohloh.net/p/gwt/widgets/project_factoids.xml" width="340" height="170" border="0" />
 <wiki:comment>Paste this into the "FactoidFunctions" page. Dont forget the Navigation (run ~jzwikinav)</wiki:comment>
 =Functions= 
 ==action==
