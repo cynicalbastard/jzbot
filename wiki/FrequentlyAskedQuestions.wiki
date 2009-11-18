@@ -1,0 +1,4 @@
+<wiki:toc/>
+
+==Is there a way to get the pid of a bot by messaging it?==
+There is. Send `exec {{mbean||java.lang:type=Runtime||Name}}` to your bot in a pm, and it will respond with `pid@host`, where pid is the process id. You must be a superop to do this.
