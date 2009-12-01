@@ -11,6 +11,7 @@
  Syntax: {{args`||``<`regex>`||``<`text>}} -- Splits `<`text> around the regular expression `<`regex>, then runs the function named by the first string in this sublist, passing the rest of the strings as arguments. For example, "{{args`||`,`||`sendmessage,%0%,Hello}}" would function exactly the same as "{{sendmessage`||`%0%`||`Hello}}", assuming %0% does not contain any commas.
 ==ascii==
  Syntax: {{ascii`||``<`char>}} -- Evaluates to the numerical code that represents the ascii character `<`char>. For example, {{ascii`||` }} results in "32", {{ascii`||`1}} results in "49", and {{ascii`||`A}} results in "65". An error will occur if `<`char> is not a single character.
+TODO: Right now, this function, instead of returning the ascii char value, returns the value of the character in whatever charset you've configured the bot with.
 ==b==
  Syntax: {{b}} -- Inserts the IRC bold character, which causes all following text to be shown as bold.
 This function is deprecated, and "\b" should be used instead.
@@ -38,6 +39,7 @@ obvious reason that this could lead to factoids that never stop running. This wi
  Syntax: {{cget`||``<`varname>}} -- Evaluates to the value of the specified chain variable.
 ==char==
  Syntax: {{char`||``<`number>}} -- Evaluates to a single character, which is the ASCII character denoted by the base-10 number `<`number>. For example, {{char`||`32}} results in " ", {{char`||`49}} results in "1", and {{char`||`65}} results in "A".
+TODO: Right now, this actually converts the number to a character in the bot's current charset instead of in ASCII. Perhaps consider using two different functions for that, or a separate UTF-8 function.
 ==compare==
  Syntax: {{compare`||``<`first>`||``<`second>`||``<`case>`||``<`if>}} -- Compares `<`first> with `<`second> to see which would come first in a dictionary. This function then evaluates to -1 if `<`first> comes before `<`second>, 0 if they are the same, and 1 if `<`first> comes after `<`second>. `<`case> and `<`if> are optional, and default to 1 and 0, respectively. When `<`case> is 1, case is taken into account (IE "A" comes before "a"), and when
 it is 0, case is ignored (IE "A" and "a" are the same). When `<`if> is 1, this function evaluates to 0 instead of -1 if `<`first> comes before `<`second>, thereby making the output suitable for directly passing to the {{if}} function. When `<`if> is 0, -1, 0, and 1 are returned as specified above.
@@ -83,7 +85,7 @@ For example, {{filter`||`,`||`first,second,third,fourth`||`^[^i]*$`||`-}} would 
 ==firstvar==
  Syntax: {{firstvar`||``<`varname>`||``<`arg1>`||``<`arg2>`||`...}} -- Sets the local variable `<`varname> to be the first argument that comes after it whose value does not evaluate to the empty string, ignoring whitespace and newlines.
 ==flip==
- Syntax: {{flip`||``<`text>}} -- Flips the specified text upside-down. This involves reversing the text and substituting each letter for an equivalent character that is flipped upside-down.
+ Syntax: {{flip`||``<`text>}} -- Flips the specified text upside-down. This involves reversing the text and substituting each letter for an equivalent character that is flipped upside-down. This only works correctly if UTF-8 is used as the charset.
 ==format==
  Syntax: {{format`||``<`formatstring>`||``<`arg1>`||``<`arg2>`||`...}} -- Applies C-style printf formatting to `<`formatstring> with `<`arg1>, `<`arg2>, etc. being the format arguments. This could be considered an equivalent to C's printf(`<`formatstring>,`<`arg1>,`<`arg2>,...), but output, instead of being sent to stdout, is put into the factoid.
 Arguments that can be parsed as whole numbers are passed to the formatting method as 64-bit signed integers. Arguments that can be parsed as fractional numbers (including numbers with a decimal point but that only have zeros after it) are passed as 64-bit floating point numbers. Other arguments are passed as strings.
@@ -111,6 +113,8 @@ when {{tempjoin}} is issued for the channel. Currently, once a channel has a fac
 ==helplist==
  Syntax: {{helplist`||``<`page>}} -- Evaluates to a space-separated list of all subpages of the help page `<`page>. This also means that you can get a space-separated list of all functions allowed in factoids by using {{helplist`||`functions}}. {{helplist`||`}} evaluates to a list of top-level help pages (IE those that you would see 
 if you sent "help" in a pm to the bot).
+==hide==
+ Syntax: {{hide`||``<`arg1>`||``<`arg2>`||`...}} -- Does nothing, and evaluates to nothing. Specifically, this does not evaluate any of its arguments, so, for example, if you had an {{lset}} function call in one of the arguments, it would not be run and the variable would not be set. This function can be used to comment out some code in a factoid.
 ==htmldecode==
  Syntax: {{htmldecode`||``<`text>}} -- Decodes all HTML-escaped characters in the specified text. This is the opposite of {{htmlencode}}.
 ==htmlencode==
@@ -119,7 +123,7 @@ if you sent "help" in a pm to the bot).
  Syntax: {{i}} -- Inserts the IRC reverse character, which, depending on the client, either reverses the foreground and background colors or shows text as italic.
 This function is deprecated, and "\i" should be used instead.
 ==identity==
- Syntax: {{identity`||``<`argument1>`||``<`argument2>`||`...}} -- Evaluates to all of its arguments, concatenated and with a space inbetween. Essentially the same as "`<`argument1> `<`argument2> ...". This function is primarily intended for the bot's internal use but can be used in factoids as well.
+ Syntax: {{identity`||``<`arg1>`||``<`arg2>`||`...}} -- Evaluates to all of its arguments, concatenated and with a space inbetween. Essentially the same as "`<`arg1> `<`arg2> ...". This function is primarily intended for the factoid language interpreter's internal use but can be used in factoids as well.
 ==if==
  Syntax: {{if`||``<`condition>`||``<`trueaction>`||``<`falseaction>}} -- Evalutes to `<`trueaction> if `<`condition> is one of the "true" values, and `<`falseaction> if `<`condition> is one of the "false" values. If `<`condition> is neither a true value nor a false value, it is interpreted as an equation (as if it were passed to {{eval}}), and then compared again.
 The true values are y, yes, t, true, 1, and 1.0, and the false values are n, no, f, false, 0, and 0.0. These values are case-insensitive. `<`falseaction> is also optional.
@@ -178,6 +182,8 @@ argument types enclosed with parentheses at the end. All subpages of this page a
  Syntax: {{lastindexof`||``<`substring>`||``<`string>`||``<`from>}} -- Evaluates to the last index within `<`string> that `<`substring> occurs, or -1 if `<`substring> isn't present anywhere within `<`string>. `<`from> is optional, and if it's present it specifies an index that the search will begin at (the search goes backward, so `<`from> would be the maximum index that this function could evaluate to).
 ==lcvars==
  Syntax: {{lcvars`||``<`regex>}} -- Same as {{lgvars}} but for chain variables instead of global variables.
+==ldelete==
+ Syntax: {{ldelete`||``<`varname>}} -- Deletes the local variable with the specified name.
 ==length==
  Syntax: {{length`||``<`value>}} -- Evaluates to the number of characters that are in `<`value>. For example, {{length`||`hello}} evaluates to "5", and {{length`||`hello world}} evaluates to "11".
 ==lengthto==
@@ -215,11 +221,12 @@ with the prefix plus the item's name being the key and the item's value being th
  Syntax: {{match`||``<`regex>`||``<`test>}} -- Evaluates to 1 if `<`test> matches the regular expression `<`regex>, or 0 if it does not.
 ==mbean==
  Syntax: {{mbean`||``<`object>`||``<`attribute>}} -- Gets the attribute of the specified mbean object from the platform-local MBean server. To get a list of all valid objects and attributes, start the bot up and attach to it with JConsole, then go to the MBeans tab. Each item in the tree that has children named "attributes" or "operations"
-is an object that can be used, and you can hover your mouse over it to see the name that `<`object> needs to be. Each item under "attributes" is an attribute that can be used as `<`attributes>.
+is an object that can be used, and you can hover your mouse over it to see the name that `<`object> needs to be. Each item under "attributes" is an attribute that can be used as `<`attributes>. If there is no such attribute, an exception will be thrown.
 ==members==
  Syntax: {{members`||``<`channel>}} -- Evaluates to a space-separated list of the nicknames of the people that are currently in `<`channel>.
 ==mode==
- Syntax: {{mode`||``<`arguments>}} -- Sets the specified mode on the channel. This must only contain one mode for now. For example, to make the person "jcp" an op, you could use {{mode`||`+o jcp}}. To take away ops from jcp, you could use {{mode`||`-o jcp}}. To add color lock to the channel (a hyperion-specific mode), you could use {{mode`||`+c}}.
+ Syntax: {{mode`||``<`arguments>}} -- Sets the specified mode on the channel. For example, to make the person "jcp" an op, you could use {{mode`||`+o jcp}}. To take away ops from jcp, you could use {{mode`||`-o jcp}}. To add color lock to the channel (a hyperion-specific mode), you could use {{mode`||`+c}}. If you wanted 
+to op both jcp and schrottplatz, but deop Marlen_Jackson, voice MrDudle, add color lock, and ban *!*@1.2.3.4 all at the same time, you could do {{mode`||`+oo-o+vcb jcp schrottplatz Marlen_Jackson MrDudle *!*@1.2.3.4}}.
 ==n==
  Syntax: {{n}} -- Resets any coloring that has been applied in the factoid, so that all succeeding text has no special formatting.
 This function is deprecated, and "\p" should be used instead.
@@ -264,8 +271,6 @@ bot's auto-join list, use {{temppart}}.
  Syntax: {{rmself}} -- Deletes this factoid. This can be used for one-time factoids, such as post-install configuration factoids for factpacks.
 ==round==
  Syntax: {{round`||``<`number>`||``<`precision>}} -- Rounds the specified number to have the specified precision. For example, {{round`||`12345`||`2}} is "12000", and {{round`||`1.2345`||`2}} is "1.2".
-==run==
- Syntax: {{run`||``<`factoid>`||``<`argument1>`||`...}} -- Runs the specified factoid without actually importing it. This function therefore evaluates to nothing. This is pretty much only useful when the factoid in question has useful side effects, like setting a global variable. `<`factoid> is the name of the factoid, and `<`argument1>, `<`argument2>, etc. are the arguments to be passed to the factoid.
 ==safeimport==
  Syntax: {{safeimport`||``<`factoid>`||``<`arg1>`||``<`arg2>`||`...}} -- Exactly the same as {{import`||``<`factoid>`||``<`arg1>`||``<`arg2>`||`...}}, except that this function won't run restricted or library factoids. If a restricted or library factoid is passed as `<`factoid>, {{safeimport}} will throw an exception.
 ==sdateformat==
@@ -285,7 +290,7 @@ length to 512 characters), then the message is split exactly where a delimiter w
  Syntax: {{sort`||``<`regex>`||``<`string>`||``<`delimiter>`||``<`case>}} --  Splits `<`string> around the regular expression `<`regex>, sorts this resulting list of substrings (case-sensitively if `<`case> is 1, otherwise case-insensitively), then reconstructs a new string by delimiting the substrings with `<`delimiter>. `<`case> is optional, and defaults to 1 if not present.
 ==split==
  Syntax: {{split`||``<`regex>`||``<`string>`||``<`varname>`||``<`action>`||``<`delimiter>}} -- Splits `<`string> into a list of strings around the regular expression `<`regex>, then evaluates `<`action> once for each item in the list of strings, with the local variable `<`varname> set to the current item in the list. {{split}} then evaluates to what each of the evaluations of `<`action> evaluated to, separated by `<`delimiter>.
-Bear in mind that backslashes in regular expressions need to be double-escaped, since the factoid language treats back slashes specially. As an example, {{split`||`\\.`||`first.second.third`||`thevalue`||`This is the %thevalue%`||` -- }} would result in "This is the first -- This is the second -- This is the third". `<`delimiter> is optional.
+As an example, {{split`||`\\.`||`first.second.third`||`thevalue`||`This is the %thevalue%`||` -- }} would result in "This is the first -- This is the second -- This is the third". `<`delimiter> is optional.
 Currently, empty values at the end of the list are ignored. This means that in the above example, if "first.second.third" were replaced with "first.second.third...", the output would still be the same. {{split}} can be used with `<`string> being the {{numberlist}} function to effectively create a for loop. Also, if `<`string> is empty, `<`action> is not evaluated.
 ==splitchars==
  Syntax: {{splitchars`||``<`text>`||``<`delimiter>}} -- Evaluates to `<`text>, but with `<`delimiter> inbetween each character in `<`text>. For example, "{{splitchars`||`hello`||`-}}" results in "h-e-l-l-o".
