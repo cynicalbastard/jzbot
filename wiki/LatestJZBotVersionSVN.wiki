@@ -1,5 +1,2 @@
-Install Subversion [http://subversion.tigris.org/ subversion.tigris.org]
-Now run
-<code>
-svn checkout http://jwutils.googlecode.com/svn/trunk/projects/jzbot2-old jzbot
-</code>
+Install Subversion [http://subversion.tigris.org/ subversion.tigris.org].
+Now run<code>svn checkout http://jwutils.googlecode.com/svn/trunk/projects/jzbot2-old jzbot</code>
