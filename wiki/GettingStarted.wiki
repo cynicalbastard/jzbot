@@ -1,1 +1,1 @@
-More coming soon. In the mean time, to get started, go to the project home page ([http://jzbot.googlecode.com]), look to the right for Featured Downloads, find one that looks like "jzbot-???.tar.gz", download it, extract it, and open README.txt for instructions.
+More coming soon. In the mean time, to get started, go to ([http://code.google.com/p/jzbot/downloads/list?q=label:Featured]), look to the right for Featured Downloads, find one that looks like "jzbot-???.tar.gz", download it, extract it, and open README.txt for instructions.
