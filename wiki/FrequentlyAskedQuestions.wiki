@@ -21,4 +21,4 @@ All times are given in milliseconds.
 
 ||Fact program||Description||Output||Parse time||Run time||Total||
 ||`Hello world`||Prints out a simple piece of text.||Hello world||0||0||0||
-||{{{ {{split|| ||{{numberlist||1||5}}||v||%v%|| -- }} }}}||Iterates over the numbers 1 through 5.||1 -- 2 -- 3 -- 4 -- 5||0||0||0}}
+||{{split`||` `||`{{numberlist`||`1`||`5}}`||`v`||`%v%`||` -- }}`||Iterates over the numbers 1 through 5.||1 -- 2 -- 3 -- 4 -- 5||0||0||0}}
