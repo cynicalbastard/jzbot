@@ -14,16 +14,11 @@ The JZBot project was started by javawizard (see JZBot's home page for a list of
 
 ==How fast is JZBot's Fact interpreter?==
 First off, Fact was not designed to be fast; it was designed to be concise and easy-to-use. That said, JZBot's Fact interpreter is not the slowest thing around. Below are some benchmarks that were run on a Sony Vaio VGN-FZ298CE with a 1.66GHz Intel Core 2 Duo and 3GB of RAM (of which JZBot used about 4MB). Each benchmark is given as a Fact program, a short explanation of what it does, and the average execution time over 5 runs. This can also be used as a general reference to which functions perform the fastest.
-  * Test text<br/>And more text<br/>And even more
-  * Another one<br/>Test
-  * Test 2
-  * Test 3
-  Test 4
-  Test 5
-  * Test 6
 
+Parse time is the amount of time it took the fact interpreter to parse the factoid into its internal representation, and usually corresponds to the length, in characters, of the factoid and the number of `{{` sequences present in the factoid. Run time is the time the factoid actually spent running. All times are given in milliseconds.
 
-
+||Fact program||Description||Parse time||Run time||Total||
+||Hello world||Prints out a piece of text||0||0||0||
 
 
 
