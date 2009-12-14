@@ -1,6 +1,6 @@
 This document contains some commonly-asked questions about JZBot and answers for those questions. There are a couple of things to remember when reading this page:
  * JZBot's factoid language is called *Fact*, and is referred to by that name within this page.
- * A *pm*, when used on this page, refers to a message sent directly to the bot instead of at a channel. Some people also know this as *querying*. Most IRC clients let you send these with "/msg <person> <message...>", where <person> is the person to send to and <message> is the message to send.
+ * A *pm*, when used on this page, refers to a message sent directly to the bot instead of at a channel. Some people also know this as *querying*. Most IRC clients let you send these with `/msg <person> <message...>`, where `<person>` is the person to send to and `<message>` is the message to send.
 
 <wiki:toc/>
 
@@ -22,8 +22,6 @@ First off, Fact was not designed to be fast; it was designed to be concise and e
    Test 4
    Test 5
  * Test 6
-
-
 
 
 
