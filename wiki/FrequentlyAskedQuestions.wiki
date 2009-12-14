@@ -13,12 +13,57 @@ There is. Send `exec {{mbean||java.lang:type=Runtime||Name}}` to your bot in a p
 The JZBot project was started by javawizard (see JZBot's home page for a list of project members). Javawizard had attained the nickname "javawiz" on IRC before he switched nicknames to jcp. The "JZ" in JZBot's name comes from "JavawiZ". The "Bot" part should be obvious.
 
 ==How fast is JZBot's Fact interpreter?==
-First off, Fact was not designed to be fast; it was designed to be concise and easy-to-use. That said, JZBot's Fact interpreter is not the slowest thing around. Below are some benchmarks that were run on a Sony Vaio VGN-FZ298CE with a 1.66GHz Intel Core 2 Duo and 3GB of RAM (of which JZBot used about 4MB). Each benchmark is given as a Fact program, a short explanation of what it does, and the average execution time over 5 runs. This can also be used as a general reference to which functions perform the fastest.
+First off, Fact was not designed to be fast; it was designed to be concise and easy-to-use. That said, JZBot's Fact interpreter is not the slowest thing around. Below are some benchmarks that were run on a Sony Vaio VGN-FZ298CE with a 1.66GHz Intel Core 2 Duo and 3GB of RAM (of which JZBot used about 4MB). Each benchmark is given as a Fact program, a short explanation of what it does, and the average execution time over 5 runs. This can also be used as a general reference as to which functions perform the fastest.
 
 Parse time is the amount of time it took the fact interpreter to parse the factoid into its internal representation, and usually corresponds to the length, in characters, of the factoid and the number of `{{` sequences present in the factoid. Run time is the time the factoid actually spent running. 
 
 All times are given in milliseconds.
 
-||Fact program||Description||Output||Parse time||Run time||Total||
-||`Hello world`||Prints out a simple piece of text.||Hello world||0||0||0||
-||{{split`||` `||`{{numberlist`||`1`||`5}}`||`v`||`%v%`||` -- }}`||Iterates over the numbers 1 through 5.||1 -- 2 -- 3 -- 4 -- 5||0||0||0}}
+<table border="1" cellspacing="0" cellpadding="1"><tr><th>Fact program</th><th>Description</th><th>Output</th><th>Parse time</th><th>Run time</th><th>Total</th></tr>
+
+<tr>
+<td>`Hello world`</td>
+<td>Prints out a simple piece of text.</td>
+<td>Hello world</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>`{{split|| ||{{numberlist||1||5}}||v||%v%|| -- }}`</td>
+<td>Iterates over the numbers 1 through 5.</td>
+<td>1 -- 2 -- 3 -- 4 -- 5</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>`{{split|| ||{{numberlist||1||10000}}||v||%v%|| -- }}`</td>
+<td>Iterates over the numbers 1 through 10,000.</td>
+<td>1 -- 2 -- 3 -- 4 -- 5 -- _etc._ -- 9998 -- 9999 -- 10000</td>
+<td>1</td>
+<td>22</td>
+<td>23</td>
+</tr>
+
+<tr>
+<td>`Hello world`</td>
+<td>Prints out a simple piece of text.</td>
+<td>Hello world</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+
+<tr>
+<td>`Hello world`</td>
+<td>Prints out a simple piece of text.</td>
+<td>Hello world</td>
+<td>0</td>
+<td>0</td>
+<td>0</td>
+</tr>
+
+</table>
