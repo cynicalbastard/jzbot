@@ -1,0 +1,13 @@
+JZBot is primarily an IRC bot. However, it can also connect to servers using these protocols:
+
+ * IRC (obviously)
+ * [http://bzflag.org BZFlag]
+
+We're working to add support for these protocols in the future:
+
+ * XMPP/Jabber/Google Talk
+ * MSN/Windows Live Messenger
+ * Facebook
+ * AOL Instant Messenger (also known as AIM)
+
+If you have a particular protocol you'd like to see support for, join our [ChatRoom chat room] and tell us about it.
