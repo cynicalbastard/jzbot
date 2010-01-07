@@ -74,7 +74,7 @@ Technically, no, but practically, yes. The interpreter and Fact itself do not im
 So, in essence, the Fact interpreter is only limited by the Java platform on which it is running. JZBot catches all stack overflow errors, however, so if one does occur, it will be reported to the user the same as any other factoid syntax error.
 
 ==Is there a limit on how many servers a bot can be connected to?==
-There isn't any built-in limit. However, the maximum number of servers is generally constrained by available memory and limits of the JVM. A practical value is 200, although I doubt anyone would ever need that many connections. 
+There isn't any built-in limit. However, the maximum number of servers is generally constrained by available memory and limits of the JVM. A practical limit is 200 servers, although I highly doubt anyone would ever need that many connections. 
 
 For the technically inclined, each server tends to take up around 1KB in the database (in addition to any factoids and other information added at that sever). An IRC connection starts two threads; a BZFlag connection starts four threads. As of this writing I haven't yet written the Facebook protocol, but I'm planning on it using three threads at the moment.
 
