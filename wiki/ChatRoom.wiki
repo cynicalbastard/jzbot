@@ -1,3 +1,3 @@
 You can join the official JZBot chat room [http://webchat.freenode.net/?randomnick=1&channels=jzbot here]. Alexander Boyd aqnd Maximilian Dirkmann use the nicknames *jcp* and *schrottplatz*, respectively, in that chat room.
 
-For the technically inclined, you can also join the official JZBot chat room at irc.freenode.net, channel #jzbot, using an IRC client such as Pidgin or ChatZilla.
+For the technically inclined, you can also join the official JZBot chat room at irc.freenode.net, channel #jzbot, using an IRC client such as Pidgin or !ChatZilla.
