@@ -2,11 +2,10 @@ JZBot is primarily an IRC bot. However, it can also connect to servers using the
 
  * IRC (obviously)
  * [http://bzflag.org BZFlag]
- * XMPP (!GoogleTalk and GMail)
+ * XMPP (!GoogleTalk, GMail, and Jabber)
 
 We're working to add support for these protocols in the future:
 
- * XMPP/Jabber/Google Talk
  * MSN/Windows Live Messenger
  * Facebook
  * AOL Instant Messenger (also known as AIM)
