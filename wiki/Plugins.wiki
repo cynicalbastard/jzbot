@@ -29,7 +29,9 @@ Output sent by the plugin to stderr will be ignored.
 ===Run Mode===
 When a plugin is run in run mode, it should connect to the host and port specified as command-line arguments and authenticate with the server using the protocol described below. If it does not do so within 10 seconds, the plugin process will be killed and an error message reported to the user.
 
+If the plugin process dies while the plugin is still supposed to be loaded, JZBot unloads the plugin and logs an error message.
+
+If JZBot requests that the plugin unload (how, exactly, it does this will be covered later in the Protocol section) and it fails to do so after 10 seconds, the plugin process will be killed, the plugin forcibly unloaded, and an error message reported to the user that requested the plugin be unloaded.
+
 ==Protocol==
 The protocol for communication is based on XML.
-
-
