@@ -1,0 +1,35 @@
+ _This page contains information on how plugins work and how to write them. For information on popular plugins, see PluginList._
+
+==Plugins==
+JZBot supports a notion of plugins. Plugins are pieces of code that can provide advanced functionality beyond what factoids can provide.
+
+Plugins in JZBot are somewhat different from plugins for other applications (such as Eclipse or Firefox) in that they can be written in *any* programming language, as long as it supports TCP sockets. Plugins themselves don't interact with JZBot code; all communication between JZBot and a particular plugin is done over a TCP socket.
+
+Furthermore, external applications can, with suitable authorization (I'll get to what "suitable authorization" means a bit further on), act as plugins themselves. This allows external applications to interface with the bot and provide additional services. For example, [http://bznetwork.googlecode.com BZNetwork] will soon be able to interface with JZBot to send notifications to channels when a particular event happens on a BZFlag server.
+
+==Writing a Plugin==
+Plugins are executable scripts or programs placed in JZBot's `storage/plugins` folder. Each file within this folder is a plugin.
+
+When JZBot is going to load a plugin, it simply executes the plugin's script, with some command line parameters in this order:
+ * The text `run`. This indicates run mode. The other mode (information mode) will be discussed shortly.
+ * The hostname or IP address that the plugin should connect to
+ * The port that the plugin should connect over
+ * A unique key for the plugin to authenticate with. I'll discuss more on this later.
+
+When a user requests information on currently-installed plugins, or information on a particular installed plugin, JZBot runs the plugin script with these command line parameters in this order:
+ * The text `info`. This indicate information mode.
+
+===Information Mode===
+When a plugin is run in information mode, it should print to stdout some general information about itself. There isn't a well-defined format for this output yet, other than that this output will be sent to the user that requested the information and that it will be truncated at 32KB in length. If anyone has a plugin that legitimately needs to send more information than this, get in touch with javawizard and he can raise this.
+
+If the plugin process takes longer than 10 seconds to run in information mode, it will be killed and an error message reported to the user requesting the information.
+
+Output sent by the plugin to stderr will be ignored.
+
+===Run Mode===
+When a plugin is run in run mode, it should connect to the host and port specified as command-line arguments and authenticate with the server using the protocol described below. If it does not do so within 10 seconds, the plugin process will be killed and an error message reported to the user.
+
+==Protocol==
+The protocol for communication is based on XML.
+
+
