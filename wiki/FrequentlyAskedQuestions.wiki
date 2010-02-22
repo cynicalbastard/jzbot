@@ -7,10 +7,10 @@ This document contains some commonly-asked questions about JZBot and answers for
 <wiki:toc/>
 
 ==Is there a way to get the pid of a bot by messaging it?==
-There is. Send `exec {{mbean||java.lang:type=Runtime||Name}}` to your bot in a pm, and it will respond with `pid@host`, where pid is the process id. You must be a superop to do this.
+There is. Send `exec {mbean|java.lang:type=Runtime|Name}` to your bot in a pm, and it will respond with `pid@host`, where pid is the process id. You must be a superop to do this.
 
 ==Where did the name "JZBot" come from?==
-The JZBot project was started by javawizard (known on IRC as *jcp*, see JZBot's home page for a list of project members). Javawizard had attained the nickname "javawiz" on IRC before he switched nicknames to jcp. The "JZ" in JZBot's name comes from "JavawiZ". The "Bot" part should be obvious.
+The JZBot project was started by [People#Alex javawizard]. Javawizard had attained the nickname "javawiz" on IRC before he switched nicknames to jcp. The "JZ" in JZBot's name comes from "JavawiZ". The "Bot" part should be obvious.
 
 ==How fast is JZBot's Fact interpreter?==
 First off, Fact was not designed to be fast; it was designed to be concise and easy-to-use. That said, JZBot's Fact interpreter is not the slowest thing around. Below are some benchmarks that were run on a Sony Vaio VGN-FZ298CE with a 1.66GHz Intel Core 2 Duo and 3GB of RAM (of which JZBot used about 4MB). Each benchmark is given as a Fact program, a short explanation of what it does, and the average execution time over 5 runs. This can also be used as a general reference as to which functions perform the fastest.
