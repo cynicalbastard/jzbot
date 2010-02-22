@@ -2,4 +2,4 @@
 <wiki:toc/>
 ----
 ==Alex==
-Alexander Boyd (known primarily on IRC as *jcp* and sometimes known on IRC as *javawizard2539*) is the manager of the JZBot project, and the guy that originally started the JZBot project. His blog can be found [http://me.opengroove.org here].
+Alexander Boyd (known primarily on IRC as *jcp* and sometimes known on IRC as *javawizard2539*) is the current manager of the JZBot project, and the guy that originally started JZBot. His blog can be found [http://me.opengroove.org here].
