@@ -1,0 +1,4 @@
+*Meet the JZBot team!* Here's a page introducing you to people that are currently members of the JZBot team.
+
+==Alex (`javawizard2539` or `jcp`)==
+Alexander Boyd (known primarily on IRC as `jcp` and sometimes known on IRC as `javawizard2539`) is the manager of the JZBot project, and the original founder.
