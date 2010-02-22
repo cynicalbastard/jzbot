@@ -3,3 +3,6 @@
 ----
 ==Alex==
 Alexander Boyd (known primarily on IRC as *jcp* and sometimes known on IRC as *javawizard2539*) is the current manager of the JZBot project, and the guy that originally started JZBot. His blog can be found [http://me.opengroove.org here].
+
+==Max==
+Maximilian Dirkmann (known primarily on IRC as *schrottplatz*) is one of the JZBot developers, and the primary maintainer of the JZBot website. 
