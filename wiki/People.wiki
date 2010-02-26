@@ -9,3 +9,6 @@ Maximilian Dirkmann (known primarily on IRC as *schrottplatz*) is one of the JZB
 
 ==James==
 James Stoker (known primarily on IRC as *JStoker*) is one of the JZBot developers. James primarily works on the Python port of JZBot's Fact interpreter.
+
+==Mark and Juli==
+Mark Boyd (*mark.boyd.engineer* on the JZBot developer list) and Juli Boyd (*juliannboyd* on the JZBot developer list) are Alex's parents, and have contributed to JZBot primarily by listening to endless technical jabber Alex throws at them on a daily basis. Mark has also helped with a lot of the JZBot design decisions.
