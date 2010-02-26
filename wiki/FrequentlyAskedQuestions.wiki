@@ -78,5 +78,8 @@ There isn't any built-in limit. However, the maximum number of servers is genera
 
 For the technically inclined, each server tends to take up around 1KB in the database (in addition to any factoids and other information added at that sever). An IRC connection starts two threads; a BZFlag connection starts four threads. As of this writing I haven't yet written the Facebook protocol, but I'm planning on it using three threads at the moment.
 
+==Is there a limit on how many plugins can be loaded?==
+As with the previous two questions, there isn't such a fixed limit, but each plugin is run in its own process (which means it takes up some memory), and each plugin uses a TCP socket connection, so the operating system JZBot is being run on can end up enforcing a practical limit. A good value would be to keep loaded plugins at less than 200.
+
 ==What should I do if I have a question that's not on here?==
 Ask it, by all means! Log in with your Google account (see that *Sign In* link in the upper-right corner; you'll need a Google account to ask a question), and then fill out [http://code.google.com/p/jzbot/issues/entry?template=Question this form]. We'll get back to you shortly.
