@@ -9,5 +9,6 @@ We're working to add support for these protocols in the future:
 
  * MSN/Windows Live Messenger
  * AOL Instant Messenger (also known as AIM)
+ * Skype
 
 If you have a particular protocol you'd like to see support for, join our [ChatRoom chat room] and tell us about it.
