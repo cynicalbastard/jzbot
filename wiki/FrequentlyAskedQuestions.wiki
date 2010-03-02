@@ -69,7 +69,7 @@ All times are given in milliseconds.
 </table>
 
 ==Is there a limit on the size of the call stack when executing factoids?==
-Technically, no, but practically, yes. The interpreter and Fact itself do not impose a stack depth limit, but Java does, and every Fact stack frame (a stack frame being where a factoid imports another factoid) adds 11 Java stack frames. Running some tests on the same machine as the benchmarks of the previous question, I was able to get around 1023 Java stack frames before a stack overflow occurred, which would translate to roughly 100 factoid stack frames. I hope to get around to testing this out with an actual Fact benchmark sometime soon.
+Technically, no, but practically, yes. The interpreter and Fact itself do not impose a stack depth limit, but Java does, and every Fact stack frame (a stack frame being where a factoid imports another factoid) adds 11 Java stack frames. Running some tests on the same machine as the benchmarks of the previous question with the factoid `rtest` having the contents `{pset|rvalue|%1%}{import|rtest|{eval|%1%+1}}` and being invoked as `rtest 0`, I was able to get 483 Fact stack frames before a stack overflow occurred. This might differ depending on the Java VM you're using and the settings you use when running the Java VM. I hope to include a factpack in JZBot in the future that will benchmark this on any given JZBot.
 
 So, in essence, the Fact interpreter is only limited by the Java platform on which it is running. JZBot catches all stack overflow errors, however, so if one does occur, it will be reported to the user the same as any other factoid syntax error, and will not cause the bot to crash.
 
