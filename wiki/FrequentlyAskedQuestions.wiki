@@ -69,9 +69,9 @@ All times are given in milliseconds.
 </table>
 
 ==Is there a limit on the size of the call stack when executing factoids?==
-Technically, no, but practically, yes. The interpreter and Fact itself do not impose a stack depth limit, but Java does, and every Fact stack frame (a stack frame being where a factoid imports another factoid) adds 11 Java stack frames. Running some tests on the same machine as the benchmarks of the previous question, I was able to get around 7000 Java stack frames before a stack overflow occurred, which would translate to roughly 600 factoid stack frames. I hope to get around to testing this out with an actual Fact benchmark sometime soon.
+Technically, no, but practically, yes. The interpreter and Fact itself do not impose a stack depth limit, but Java does, and every Fact stack frame (a stack frame being where a factoid imports another factoid) adds 11 Java stack frames. Running some tests on the same machine as the benchmarks of the previous question, I was able to get around 1023 Java stack frames before a stack overflow occurred, which would translate to roughly 100 factoid stack frames. I hope to get around to testing this out with an actual Fact benchmark sometime soon.
 
-So, in essence, the Fact interpreter is only limited by the Java platform on which it is running. JZBot catches all stack overflow errors, however, so if one does occur, it will be reported to the user the same as any other factoid syntax error.
+So, in essence, the Fact interpreter is only limited by the Java platform on which it is running. JZBot catches all stack overflow errors, however, so if one does occur, it will be reported to the user the same as any other factoid syntax error, and will not cause the bot to crash.
 
 ==Is there a limit on how many servers a bot can be connected to?==
 There isn't any built-in limit. However, the maximum number of servers is generally constrained by available memory and limits of the JVM. A practical limit is 200 servers, although I highly doubt anyone would ever need that many connections. 
@@ -79,7 +79,7 @@ There isn't any built-in limit. However, the maximum number of servers is genera
 For the technically inclined, each server tends to take up around 1KB in the database (in addition to any factoids and other information added at that sever). An IRC connection starts two threads; a BZFlag connection starts four threads. As of this writing I haven't yet written the Facebook protocol, but I'm planning on it using three threads at the moment.
 
 ==Is there a limit on how many plugins can be loaded?==
-As with the previous two questions, there isn't such a fixed limit, but each plugin is run in its own process (which means it takes up some memory), and each plugin uses a TCP socket connection, so the operating system JZBot is being run on can end up enforcing a practical limit. A good value would be to keep loaded plugins at less than 200.
+As with the previous two questions, there isn't such a fixed limit, but each plugin is run in its own process (which means it takes up some memory), and each plugin uses a TCP socket connection, so the operating system JZBot is being run on can end up enforcing a practical limit. A good value would be to keep loaded plugins at less than 50.
 
 ==What should I do if I have a question that's not on here?==
-Ask it, by all means! Log in with your Google account (see that *Sign In* link in the upper-right corner; you'll need a Google account to ask a question), and then fill out [http://code.google.com/p/jzbot/issues/entry?template=Question this form]. We'll get back to you shortly.
+Ask it, by all means! Log in with your Google account (see that *Sign In* link in the upper-right corner; you'll need a Google account to ask a question), and then fill out [http://code.google.com/p/jzbot/issues/entry?template=Question this form]. We'll get back to you shortly. Or you could join our [ChatRoom chat room] and ask us directly.
