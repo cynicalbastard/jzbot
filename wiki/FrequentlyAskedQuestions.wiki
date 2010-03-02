@@ -1,6 +1,6 @@
 This document contains some commonly-asked questions about JZBot and answers for those questions. There are a couple of things to remember when reading this page:
  * JZBot's factoid language is called *Fact*, and is referred to by that name within this page.
- * A *pm*, when used on this page, refers to a message sent directly to the bot instead of at a channel or a chat room. Some people also know this as *querying*. Most IRC clients let you send these with `/msg <person> <message...>`, where `<person>` is the person to send to and `<message>` is the message to send. People that chat over GMail or Facebook almost exclusively use _pm_s to chat; Indeed, Facebook *only* allows chatting with _pm_s. pm is short for Private Message.
+ * A *pm*, when used on this page, refers to a message sent directly to the bot instead of at a channel or a chat room. Some people also know this as *querying*. Most IRC clients let you send these with `/msg <person> <message...>`, where `<person>` is the person to send to and `<message>` is the message to send. People that chat over GMail or Facebook almost exclusively use <i>pm</i>s to chat; Indeed, Facebook *only* allows chatting with <i>pm</i>s. pm is short for Private Message.
  * *JZBot* and *Marlen*/*Marlen Jackson*/_etc._ do not mean the same thing. There's a FAQ question on that below; If you don't know the difference between these, you should probably read it.
 
 ==Table of Contents==
