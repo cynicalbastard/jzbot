@@ -77,7 +77,7 @@ So, in essence, the Fact interpreter is only limited by the Java platform on whi
 ==Is there a limit on how many servers a bot can be connected to?==
 There isn't any built-in limit. However, the maximum number of servers is generally constrained by available memory and limits of the JVM. A practical limit is 200 servers, although I highly doubt anyone would ever need that many connections. 
 
-For the technically inclined, each server tends to take up around 1KB in the database (in addition to any factoids and other information added at that sever). An IRC connection starts two threads; a BZFlag connection starts four threads. As of this writing I haven't yet written the Facebook protocol, but I'm planning on it using three threads at the moment.
+For the technically inclined, each server tends to take up around 1KB in the database (in addition to any factoids and other information added at that sever). An IRC connection starts two threads, a BZFlag connection starts four threads, and an XMPP connection start a number of threads that I haven't currently investigated, although I think it's approximately 3 threads. Facebook Chat uses XMPP, so it would have the same number of threads, but Facebook External will most likely use 1 thread.
 
 ==Is there a limit on how many plugins can be loaded?==
 As with the previous two questions, there isn't such a fixed limit, but each plugin is run in its own process (which means it takes up some memory), and each plugin uses a TCP socket connection, so the operating system JZBot is being run on can end up enforcing a practical limit. A good value would be to keep loaded plugins at less than 50.
