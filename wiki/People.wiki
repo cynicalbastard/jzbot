@@ -14,4 +14,4 @@ James Stoker (known primarily on IRC as *JStoker*) is one of the JZBot developer
 Mark Boyd (*mark.boyd.engineer* on the JZBot developer list) and Juli Boyd (*juliannboyd* on the JZBot developer list) are Alex's parents, and have contributed to JZBot primarily by listening to endless technical jabber Alex throws at them on a daily basis. Mark has also helped with a lot of the JZBot design decisions.
 
 ==Tony Luth==
-Anthony Luth (known primarily on IRC as *Anthony_Luth*) is the guy that originally commissioned JZBot for a group that he was a member of. When the company went defunct, JZBot was open-sourced. Tony participated in a number of design decisions at the beginning of JZBot's history, and chose the name "Marlen Jackson" for the official JZBot instances run by Alex.
+Anthony Luth (known primarily on IRC as *!Anthony_Luth*) is the guy that originally commissioned JZBot for a group that he was a member of. When the company went defunct, JZBot was open-sourced. Tony participated in a number of design decisions at the beginning of JZBot's history, and chose the name "Marlen Jackson" for the official JZBot instances run by Alex.
