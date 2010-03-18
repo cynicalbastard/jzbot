@@ -16,5 +16,5 @@ Mark Boyd (*mark.boyd.engineer* on the JZBot developer list) and Juli Boyd (*jul
 ==Tony==
 Anthony Luth (known primarily on IRC as *!Anthony_Luth*) is the guy that originally commissioned JZBot for a group that he was a member of. When the group split up, JZBot was open-sourced. Tony participated in a number of design decisions at the beginning of JZBot's history, and chose the name "Marlen Jackson" for the official JZBot instances run by Alex.
 
-==MrDudle==
-MrDudle (known primarily on IRC as *MrDudle*) is the primary financial backer of JZBot and the owner of jzbot.org.
+==!MrDudle==
+!MrDudle (known primarily on IRC as *!MrDudle*) is the primary financial backer of JZBot and the owner of jzbot.org.
