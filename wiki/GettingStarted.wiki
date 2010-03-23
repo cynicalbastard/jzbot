@@ -12,7 +12,7 @@ Anyway, let's get started. The first thing we need to do is download some progra
 JZBot is stored in a Subversion repository (you don't need to know what that means), so you'll need Subversion to download JZBot.
    * If you're on *Linux*, open a terminal and type "sudo apt-get install subversion".
    * If you're on *Mac OS X*, you don't need to do anything; all macs come with Subversion installed. If your mac doesn't have Subversion installed, get in touch with one of the JZBot developers and tell them this.
-   * If you're on *Windows*, you'll need to download and install an SVN Client. Two good SVN clients are [http://tortoisesvn.tigris.org/ TortoiseSVN] and [http://rapidsvn.tigris.org RapidSVN].
+   * If you're on *Windows*, you don't need to do anything; the installer comes with an SVN client.
 
 ==For Linux and Mac OS X==
 Now you're ready to actually download JZBot. Open a terminal and cd to the folder that you want JZBot to be stored in. If you have no clue what that means, then just type these commands:
@@ -32,17 +32,7 @@ svn co http://jwutils.googlecode.com/svn/trunk/projects/jzbot2-old .
 The first command will take a long time to run, and will download JZBot. The second command should print `BUILD SUCCESSFUL` when it's done; if it prints `BUILD FAILED` instead, get in touch with the JZBot developers and ask them for more help, since this indicates a serious problem. The third command should take a couple of seconds to run, and print a message about a new server being added after it's done. The fourth command won't finish running; it actually runs JZBot and won't stop running until you shut down your bot.
 
 ==For Windows==
-Now you're ready to actually download JZBot. Create a new folder somewhere and call it "jzbot". Right click on the folder and click "SVN Checkout". Put "http://jwutils.googlecode.com/svn/trunk/projects/jzbot2-old" as the checkout url and click OK.
-
-Once the download is complete, open the jzbot folder and press Shift while right clicking someone in Windows Explorer. Look near the top for "Open Command Window Here" and click on it. A command window has now been opened.
-
-Now, run these commands, replacing `<nick>` with a nickname you want for your bot, and `<hostname>` with your hostname or hostmask on IRC (read <a href="#Hostname">here</a> if you don't know what your hostname is):
-{{{
-build
-jzbot addserver freenode irc irc.freenode.net 6667 <nick> <hostname>
-jzbot
-}}}
-The first command should print 'BUILD SUCCESSFUL' when it's done; if it prints 'BUILD FAILED' instead, get in touch with the JZBot developers and ask them for more help, since this indicates a serious problem. The second command should take a couple of seconds to run, and print a message about a new server being added after it's done. The third command won't finish running; it actually runs JZBot and won't stop running until you shut down your bot.
+Now you're ready to actually download JZBot. Go to the Downloads page on this website, and download the file "WindowsInstaller.zip". Extract this to the folder you want to run JZBot and double click on "install.bat". This program will install and configure JZBot for you after you specify what nickname you want it to use and what your hostname is. To start it in the future, double click on the file named jzbot.bat
 
 ----
 
@@ -58,8 +48,6 @@ This will instruct your bot to join the channel #jzbot. You're welcome to leave 
 If you don't know what your hostname is on a particular IRC server, you can find out by signing on to the IRC server, and running "/whois `<yournick>`", where `<yournick>` is your nickname on the IRC server. One of the lines sent back to you will contain some text of the format "user@host". `host` is your hostname.
 
 The server that this tutorial connects you to is the Freenode Chat Network; to find out your hostname there, you would connect to irc.freenode.net.
-
-
 
 
 
