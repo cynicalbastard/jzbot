@@ -32,7 +32,7 @@ svn co http://jwutils.googlecode.com/svn/trunk/projects/jzbot2-old .
 The first command will take a long time to run, and will download JZBot. The second command should print `BUILD SUCCESSFUL` when it's done; if it prints `BUILD FAILED` instead, get in touch with the JZBot developers and ask them for more help, since this indicates a serious problem. The third command should take a couple of seconds to run, and print a message about a new server being added after it's done. The fourth command won't finish running; it actually runs JZBot and won't stop running until you shut down your bot.
 
 ==For Windows==
-Now you're ready to actually download JZBot. Go to the Downloads page on this website, and download the file "WindowsInstaller.zip". Extract this to the folder you want to run JZBot and double click on "install.bat". This program will install and configure JZBot for you after you specify what nickname you want it to use and what your hostname is. To start it in the future, double click on the file named jzbot.bat
+Now you're ready to actually download JZBot. Go to the Downloads page on this website, and download the file [http://jzbot.googlecode.com/files/WindowsInstaller.zip WindowsInstaller.zip]. Extract this to the folder you want to run JZBot and double click on "install.bat". This program will install and configure JZBot for you after you specify what nickname you want it to use and what your hostname is. To start it in the future, double click on the file named jzbot.bat
 
 ----
 
@@ -48,6 +48,4 @@ This will instruct your bot to join the channel #jzbot. You're welcome to leave 
 If you don't know what your hostname is on a particular IRC server, you can find out by signing on to the IRC server, and running "/whois `<yournick>`", where `<yournick>` is your nickname on the IRC server. One of the lines sent back to you will contain some text of the format "user@host". `host` is your hostname.
 
 The server that this tutorial connects you to is the Freenode Chat Network; to find out your hostname there, you would connect to irc.freenode.net.
-
-
 
