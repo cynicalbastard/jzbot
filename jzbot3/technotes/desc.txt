@@ -1,0 +1,98 @@
+So, this is a re-write of JZBot in Python.
+
+jzbot3 (as this one is called) is going to use MongoDB. And it's going to be way cool.
+
+K so, couple of things that we need to work on. I think one of the biggest things is that jzbot2 started life out as an IRC bot, and other protocols got shoehorned into acting like they were IRC servers. That really ended up not working well.
+
+So, some things I've been thinking about.
+
+In jzbot2, users were referenced by their server and their nick. And then their hostname, some times. All of that stuff was really IRC-specific and difficult to manage. Not anymore.
+
+So, users are going to have some generic pieces of information not specific to any given protocol. They're just defined by the requirements they have to satisfy. I'm thinking those will be:
+
+	Persistent name: This is a piece of text that represents the user's identity, if possible. This is used to authenticate the user throughout the bot.
+	
+		On IRC, this will be the user's hostname.
+		
+		On BZFlag, this will be the user's callsign, prepended with a "+" if the user is verified.
+		
+		On XMPP, this will be the user's JID without the resource string.
+		
+		On IMAP, this will be the user's email address.
+	
+	Display name: This is a piece of text that can be used when printing non-technical information about the user.
+		
+		On IRC, this will be the user's nick.
+		
+		On BZFlag, this will be the user's callsign (without a "+" prepended, even if the user is verified).
+		
+		On XMPP, this will be the user's current name as specified by the XMPP server.
+		
+		On IMAP, this will be the user's email address. I might consider changing it to the user's name in the IMAP address book if I can figure out how to access the address book from IMAP (I don't even know if that's possible yet).
+	
+	Transient name: This is a piece of text that, at any instant in time, uniquely identifies a particular user on a particular server. A user's transient name can change over time (and can even change during a single connection from that user), but it should not change so frequently that it could mess up message delivery.
+		
+		On IRC, this will be the user's nick.
+		
+		On BZFlag, this will be the user's callsign.
+		
+		On XMPP, this will be the user's JID with the resource string.
+		
+		On IMAP, this will be the user's email address.
+	
+	Group name: This is a piece of text that identifies a particular user. This is different from the persistent name and the transient name in that, unlike the persistent name, only one conceptual user will use a particular group name (IRC users from the same host would have the same persistent name but would be conceptually different users), and unlike the transient name, multiple users can use the same group name. This primarily exists to associate all of the resources signed onto a particular XMPP account.
+	    
+	    On IRC, this will be the user's nick.
+	    
+	    On BZFlag, this will be the user's callsign.
+	    
+	    On XMPP, this will be the user's JID without the resource string.
+	    
+	    On IMAP, this will be the user's email address.
+
+Those four properties of a user are all used in different ways.
+
+One potential problem we need to deal with is whether or not we should track when a user's nick changes. TODO: solve this. I'm thinking changes should be tracked. That would also allow us to track when the user goes offline.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
