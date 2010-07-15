@@ -58,6 +58,26 @@ If a transient name conflict occurs (meaning that the protocol tells the bot tha
 
 Channels are stored in a map based on their name. This map isn't weak since it's easy to tell whether we're currently a member of a channel or not (join and part messages etc)
 
+So I'm thinking we should have a global map that contains all of the servers. It maps server names to Server objects.
+
+Server objects store information about the server. They roughly mirror jzbot2's ConnectionContext and ConnectionWrapper. Note that both of those classes have been merged together into the Server class.
+
+So, Server stores all of the information about the server, such as the hostname and password, and the protocol instance corresponding to that server. The protocol calls methods on the server to notify the server when a certain event occurs, such as a message being received or a user switching to a different transient name. Methods are also called on the Server itself to cause it to do things. For example, you can call server.send_message("some-transient-name", "Hey! How's it going?"). Internally, the server delegates to the protocol instance it contains to actually send messages.
+
+Event notifications being passed to the server from the protocol can specify all four user properties. However, if a certain user property is not known at the time of the notification, it can be left blank; the server object will try to infer it if possible. The exception to this is the user's transient name, which must be specified. Basically, the server object has its cached User object map. User objects store the four user properties. When an event is called, the corresponding user object is looked up. If it doesn't exist, a blank user object is created with the specified transient name and inserted into the map. Then, the server checks the three other attributes to see which ones were specified in the event. Those that were have their corresponding user object values updated to be set to the ones passed into the event. Those that did not have a value specified are left as-is. The event is then processed.
+
+Methods being called on the protocol from the server have User objects passed in. However, only the transient name is guaranteed to be present on the user object. The object is taken from the weak map if possible, so it will usually have all of the information filled in. If the user isn't in the weak map, however, then some of the fields may be missing. For example, it's perfectly legal to kick a user from an IRC channel even if the user isn't a member of the channel; this usually doesn't do anything on the server, but the client should pass it to the server in case the server does do something. When such a user is kicked from the channel, only the user's transient name will be available. For IRC, this is all the information that is needed, so things work out.
+
+The user object used in that case is still saved into the weak map. If the protocol reports an event on that user to the server before the method on the server object is called to perform whatever action is to be performed, then the user object could have additional information filled in. 
+
+One important thing I'm thinking about is that when a user joins a channel (or when the bot joins a channel and it sees all the other users currently in that channel), the bot should store their weak-mapped object in a strong map (I.E. a normal Python dict) corresponding to the members of that channel. That way, information about all the other users at the channels the bot is joined to is always available. And because the weak map tracks user objects, a user in multiple channels will only have a single User object that just happens to be referenced by multiple channels. When a user parts a channel, or when the protocol gets disconnected, the channels (and the channel maps) are cleared out. The weak user map is also cleared on server disconnect to make sure that all previous user information is purged.
+
+There is an inherent reference cycle between a server object and its matching protocol instance. Because of this, neither the Server class or the protocol's class is allowed to have a __del__ function. However, I'm thinking the reference cycle will be broken when the server disconnects, so this probably wouldn't be an issue.
+
+When the bot starts up, a garbage-collection thread is started. Every few minutes (this would be configurable, but I'm thinking a default value could be every 1/2 hour), this thread runs a garbage collection cycle. Garbage collection can also be initiated by superops.
+
+All methods called on protocol instances are synchronized on a lock. The server object takes care of this. I'm thinking there should be a utility function that can generate an object with methods corresponding to methods of a given object but that synchronize on a particular lock. 
+
 
 
 
