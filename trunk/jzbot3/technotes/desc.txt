@@ -52,7 +52,11 @@ So, users are going to have some generic pieces of information not specific to a
 
 Those four properties of a user are all used in different ways.
 
-One potential problem we need to deal with is whether or not we should track when a user's nick changes. TODO: solve this. I'm thinking changes should be tracked. That would also allow us to track when the user goes offline.
+Users obtained from the bot are tracked in a weak map based on their server and transient name. When the protocol reports that their transient name has changed, the map is checked to see if it contains a corresponding user object. If it does, the object's transient name is updated to reflect the new transient name of that user and the object is removed and re-inserted under the new transient name. This name updating, removal, and re-insertion is done under a single lock. That same lock is also used to check for an existing user object in the map when a user object is requested.
+
+If a transient name conflict occurs (meaning that the protocol tells the bot that the server has changed the transient name of a particular user to the transient name that another user the bot is tracking currently uses), the server drops the user previously using the transient name from the map and marks the user object as not being tracked. It will also print a message to stdout, as this typically indicates a bug (I.E. it's not possible for this to happen if both the server and jzbot are behaving correctly).
+
+Channels are stored in a map based on their name. This map isn't weak since it's easy to tell whether we're currently a member of a channel or not (join and part messages etc)
 
 
 
