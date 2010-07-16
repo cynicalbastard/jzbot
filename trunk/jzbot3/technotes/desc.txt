@@ -78,6 +78,39 @@ When the bot starts up, a garbage-collection thread is started. Every few minute
 
 All methods called on protocol instances are synchronized on a lock. The server object takes care of this. I'm thinking there should be a utility function that can generate an object with methods corresponding to methods of a given object but that synchronize on a particular lock. 
 
+So, when the bot starts up, it loads the configuration file (which is located at storage/config.py). It reads from the file the MongoDB database it should connect to. It then connects to that database. So far so good.
+
+Then it constructs a map global to the jzbot module mapping server names to Server objects. It then starts the connection cycle thread.
+
+There's a global Flag connection_cycle_needed. The connection cycle thread performs one connection cycle every 2 minutes (this will be configurable in the future) or whenever this flag is set. The flag is checked every two seconds to see if it's set.
+
+The connection cycle thread operates in several steps:
+
+	The list of servers is selected from the database. This is stored for the duration of the connection cycle loop.
+	
+	The list of database servers is iterated over, and a new Server object created for each server that doesn't have an entry in the server map. This server object is then placed into the map.
+	
+	The server map is iterated over, and for each server, the following actions are performed in order, while synchronized on the server's lock:
+	
+		If the server object's connection is connected but it shouldn't be (which is because the corresponding database server is deactivated, there is no corresponding database server, or the server has been flagged as needing a reconnect), the connection is disconnected.
+		
+		If the server object's connection is disconnected, it is removed from the server object, and all of the server object's maps (such as its channel map and its weak user map) are cleared.
+		
+		If the server object does not have a connection but it should (meaning that it has a database server and the database server is active), a new connection is created for the server, and the connection is connected. The connection is connected via the queue created for the server.
+	
+	A copy of the server map is iterated over once again, and any servers that do not have a corresponding database server are removed.
+
+Note one important thing here: when a server disconnects and reconnects, its protocol object changes. This can be used to carry out a long-time action only if the server does not disconnect in the middle. For example, when the protocol notifies the server that it has successfully connected, the server starts a thread joining the channels that should be joined on startup.
+
+Each server maintains a queue of commands. Entries in this queue consist of 4-element tuples. The first element is a function on the protocol instance to call, the second element is an ordered set of arguments to pass in, the third element is a dictionary of keyword arguments to pass in, and the fourth element is a delay. A thread is started when a new protocol instance is created. This thread sits and reads commands off of the queue and calls them. Before executing a given command, the thread delays the delay specified by the command. It can also delay an additional specified amount between commands if the protocol requests that calls to it be throttled (right now, only IRC does this; I'm thinking it will be user-configurable instead of protocol-specific at some later point in time).
+
+If a protocol method throws an exception, its traceback will be printed to stdout, but the queue thread will otherwise ignore it. In particular, it will not stop executing commands as requested.
+
+Before executing a command, the queue thread synchronizes on the server's lock. It then checks to make sure that the protocol object present when it was created is still the same one on the server. If it is not (which means that the server has since disconnected and then reconnected), it exits.
+
+
+
+
 
 
 
