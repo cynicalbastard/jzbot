@@ -46,6 +46,12 @@ class Server(object):
         protocol has connected as. None of it is required.
         """
         pass
+    
+    def on_disconnect(self):
+        """
+        Called when the protocol disconnects from the server for some reason.
+        """
+        pass
 
 
 class CommandSpooler(Thread):
