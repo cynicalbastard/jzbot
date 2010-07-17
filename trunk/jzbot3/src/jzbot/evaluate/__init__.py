@@ -4,13 +4,13 @@ from decimal import Decimal
 import math
 
 
-# This defines the operations we support. To add a new infix operation,
-# simply edit this list. The list is organized in terms of precedence; the
-# first dict in the list contains all operations that have the highest
-# precedence, the next dict in the list contains all operations that have the
-# next-to-highest precedence, and so on. Keys in the dict are the names of the
-# operations, and values in the dict are two-argument functions that compute
-# the specified operation.
+# The next few lines define the operations we support. To add a new infix 
+# operation, simply edit this list. The list is organized in terms of 
+# precedence; the first dict in the list contains all operations that have the
+# highest precedence, the next dict in the list contains all operations that 
+# have the next-to-highest precedence, and so on. Keys in the dict are the 
+# names of the operations, and values in the dict are two-argument functions 
+# that compute the specified operation.
 # 
 # Adding a new operation is as simple as editing this list and adding a new
 # entry to the dict corresponding to the desired precedence level. If you want
@@ -20,6 +20,10 @@ import math
 # Note that all of the operations use lambdas instead of functions present in
 # the operations module. I did this so that it's clearer what each operation 
 # does. In other words, this wasn't an oversight on my part :)
+# 
+# Also, operations must consist only of symbols. They can't use underscores.
+# They should try not to use percent signs or braces either, since those have
+# special meaning in the Fact language.
 operation_list = [
     {
         "^" : lambda x, y: x ** y
@@ -62,7 +66,9 @@ default_variables = {
                    "209749445923078164062862089986280348253421170679821480"
                    "865132823066470938446095505822317253594081284811174502"
                    "841027019385211055596446229489549303819644288109756659"
-                   "33446128475648233786783165271201909145649")
+                   "33446128475648233786783165271201909145649"),
+    "over_nine_thousand" : Decimal("9001") # This equation parser has a sense
+                                           # of humor :D --javawizard
 }
 default_functions = {
     "int": lambda x: x.to_integral(),
@@ -104,7 +110,7 @@ number = Regex(r"[\+\-]?(([0-9]+(\.[0-9]+)?)|(\.[0-9]+))")
 comma = Literal(",")
 
 name = Regex("[a-z][a-z0-9_]*")
-var_name = Regex("[a-z]+")
+var_name = Regex("[a-z][a-z0-9_]*")
 var_name.setParseAction(lambda tokens: Variable(tokens))
 
 element = Forward()
