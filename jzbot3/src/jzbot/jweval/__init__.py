@@ -1,33 +1,55 @@
 
 from pyparsing import Literal, Word, Group, ZeroOrMore, Regex, Forward
-from jzbot.utils.coreutils import DynamicList
+from decimal import Decimal
 
-PREFIX = 1
-POSTFIX = 2
-INFIX = 3
+# Operations
+operations = {
+    "+": (lambda x, y: x + y),
+    "-": (lambda x, y: x - y),
+    "*": (lambda x, y: x * y),
+    "/": (lambda x, y: x / y),
+    "^": (lambda x, y: x ** y),
+}
 
-# This maps operation names ("+", "*", etc) to functions that accept
-# two arguments that perform the specified operation.
-operation_map = {}
+# This is the really interesting part, the actual parser syntax
+
+# The literal operations
+add = Literal("+")
+sub = Literal("-")
+mul = Literal("*")
+div = Literal("/")
+pow = Literal("^")
+lpr = Literal("(")
+rpr = Literal(")")
 
 # Numbers. Kinda an important thing for an equation parser.
 number_regex = r"([0-9]+(\.[0-9]+)?)|(\.[0-9]+)"
 number = Regex(number_regex)
 
-# We'll define equations later.
-equation = Forward()
+element = Forward()
 
-# Now we group stuff by precedence.
-precedence_list = DynamicList()
+# Now the operations and their precedence.
+powp = Group(element + ZeroOrMore(pow + element)) 
+dimp = Group(powp + ZeroOrMore((mul | div) + powp))
+adsp = Group(dimp + ZeroOrMore((add | sub) + dimp))
 
-def new_operation(precedence, name, function):
-    precedence_list[precedence].append(name)
-    operation_map[name] = function
+equation = top
 
-new_operation(1, "^", INFIX, lambda x, y: x ** y)
-new_operation(2, "*", INFIX, lambda x, y: x * y)
-new_operation(2, "/", INFIX, lambda x, y: x / y)
-new_operation(3, "+", INFIX, lambda x, y: x + y)
+element << (number | (lpar + )) 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
