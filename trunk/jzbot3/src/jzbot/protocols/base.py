@@ -19,6 +19,13 @@ class NotSupported(Exception):
 
 
 class Protocol(object):
+    """
+    The class protocol implementations should extend from.
+    
+    Instances of a subclass will only be used for one connection. Once a
+    connection made and then lost, that particular instance will be discarded
+    and a new instance created when it's time to connect again.
+    """
     def __init__(self, server):
         """
         Initializes this protocol instance. Subclasses should call this
@@ -70,9 +77,17 @@ class Protocol(object):
         """
         Instructs the protocol to join a particular channel. This method
         should return immediately, and then when the channel actually gets
-        joined, server.on_self_join_channel should be called. 
+        joined, server.on_join_channel should be called. 
         """
         _todo()
+    
+    def part_channel(self, channel, message):
+        """
+        Instructs the protocol to leave the specified channel. The message
+        can be None to instruct the protocol not to use a part message. This
+        method should return immediately; if/when the channel part actually
+        takes place, server.on_part_channel should be called.
+        """
     
     def get_max_length(self):
         """
@@ -82,6 +97,43 @@ class Protocol(object):
         to the protocol.
         """
         _todo()
+    
+    def is_connected(self):
+        """
+        Returns true if this protocol has not disconnected. This method must
+        return true even before the protocol is initially connected, I.E. it
+        should only return false after the protocol has been connected and
+        then disconnected or had its connection lost.
+        """
+        _todo()
+    
+    def disconnect(self, message):
+        """
+        Disconnects using the specified message, which can be None to
+        disconnect without providing a message. This method can return
+        immediately; once the disconnect actually goes through,
+        server.on_disconnect should be called. is_connected is required to
+        return false when server.on_disconnect is called.
+        """
+        _todo()
+    
+    def set_topic(self, channel, topic):
+        """
+        Instructs the protocol to set the topic of the specified channel. When
+        the topic change actually occurs, server.on_topic should be called.
+        Protocols that don't support topic changes shouldn't override this
+        method.
+        """
+        pass
+    
+    def switch_transient_name(self, new_name):
+        """
+        Instructs the protocol to change the transient name that it's using.
+        If/when this occurs, server.on_transient_name_change should be called.
+        Protocols that don't support transient name changing shouldn't
+        override this method.
+        """
+        pass
     
     
     
