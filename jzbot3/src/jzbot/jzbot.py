@@ -11,6 +11,7 @@ import shutil
 import imp as importutils
 import sys
 import jzbot.datastore as datastore
+from weakref import WeakValueDictionary
 
 server_map = {}
 base_folder = File(__file__).parent.parent.parent
@@ -20,6 +21,30 @@ class Server(object):
     A server.
     """
     def __init__(self):
+        self.user_map = WeakValueDictionary()
+        self.channel_map = {}
+    
+    def on_action(self, transient_name, message, persistent_name=None, 
+                  display_name=None, group_name=None):
+        """
+        Called by a protocol when an action is received.
+        """
+        pass
+    
+    def on_message(self, transient_name, message, persistent_name=None,
+                   display_name=None, group_name=None):
+        """
+        Called by a protocol when a message is received.
+        """
+        pass
+    
+    def on_connect(self, transient_name=None, persistent_name=None,
+                   display_name=None, group_name=None):
+        """
+        Called when the server successfully connects. The user information
+        provided to this method is the information for the user that the
+        protocol has connected as. None of it is required.
+        """
         pass
 
 

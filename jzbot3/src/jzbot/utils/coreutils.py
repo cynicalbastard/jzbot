@@ -60,6 +60,30 @@ def reapply(function, repetitions, argument):
     """
 
 
+class DynamicList(object):
+    """
+    A list-like object that only allows retrieval of elements. If you ask it
+    for an element that doesn't yet exist, it will invoke the specified
+    function repeatedly to generate items to add to the dynamic list until the
+    dynamic list is large enough that the specified item can be retrieved.
+    """
+    def __init__(self, function):
+        self.function = function
+        self.items = []
+    
+    def __getitem__(self, item):
+        if isinstance(item, int):
+            return self.get_or_add_item(item)
+        return self.items[item]
+    
+    def get_or_add_item(self, item):
+        while len(self.items) <= item:
+            self.items.append(self.function())
+        return self.items[item]
+    
+    def __iter__(self):
+        return self.items.__iter__()
+
 
 
 
