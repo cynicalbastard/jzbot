@@ -81,7 +81,7 @@ class Protocol(object):
         """
         _todo()
     
-    def part_channel(self, channel, message):
+    def part_channel(self, channel, message=None):
         """
         Instructs the protocol to leave the specified channel. The message
         can be None to instruct the protocol not to use a part message. This
@@ -108,7 +108,7 @@ class Protocol(object):
         """
         _todo()
     
-    def disconnect(self, message):
+    def disconnect(self, message=None):
         """
         Disconnects using the specified message, which can be None to
         disconnect without providing a message. This method can return
