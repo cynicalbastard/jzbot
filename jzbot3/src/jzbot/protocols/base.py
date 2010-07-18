@@ -88,6 +88,7 @@ class Protocol(object):
         method should return immediately; if/when the channel part actually
         takes place, server.on_part_channel should be called.
         """
+        _todo()
     
     def get_max_length(self):
         """
