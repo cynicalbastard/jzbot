@@ -108,6 +108,17 @@ If a protocol method throws an exception, its traceback will be printed to stdou
 
 Before executing a command, the queue thread synchronizes on the server's lock. It then checks to make sure that the protocol object present when it was created is still the same one on the server. If it is not (which means that the server has since disconnected and then reconnected), it exits.
 
+One thing I forgot to mention is that a reference to the user object representing the local user is stored in the server. When a transient conflict occurs, if one of the users involved is the local user the other user will be preempted regardless of which user initiated the transient conflict. Otherwise, the user switching transient names will get the name and the other user will be preempted.
+
+Servers have a number of configuration properties associated with them that can be edited. Protocol implementations can specify which of these are mandatory. For example, IRC mandates the host and nick properties, but optionally allows the port and password properties. The server object is passed to the protocol when constructing it. The protocol must call server.init_user_info(), passing in the transient name that the protocol wants to start out with, before returning from __init__. Usually, the transient name is obtained from one of the server properties (IRC obtains it, for example, from the nick property).
+
+Protocols have a static method, validate_config_properties, that accepts a dict and checks to make sure it's an allowed set of configuration properties. If it isn't, it should throw an exception whose value explains the problem. If the exception class is KeyError, a message indicating a missing required property is generated. This saves protocol implementors from having to write code just to throw an exception for missing required properties.
+
+The configuration properties are present as a dict stored in server.config_properties. This dict will be updated whenever the server disconnects and then reconnects. When attributes for a server are edited, the corresponding server object's config_properties dict will not be updated until a reconnect occurs.
+
+Servers are stored in the database as {name: ..., protocol: ..., active: True, config: {...: ..., ...}}
+
+
 
 
 

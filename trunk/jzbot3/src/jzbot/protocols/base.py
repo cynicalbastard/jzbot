@@ -111,10 +111,9 @@ class Protocol(object):
     def disconnect(self, message=None):
         """
         Disconnects using the specified message, which can be None to
-        disconnect without providing a message. This method can return
-        immediately; once the disconnect actually goes through,
-        server.on_disconnect should be called. is_connected is required to
-        return false when server.on_disconnect is called.
+        disconnect without providing a message. This method should block until
+        the disconnect has proceeded to the point that is_connected() will
+        return false. It should then call server.on_disconnect() and return.
         """
         _todo()
     
