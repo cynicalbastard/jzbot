@@ -106,6 +106,7 @@ class Function(object):
 class Variable(object):
     def __init__(self, tokens):
         self.name = tokens[0]
+        
     def __repr__(self):
         return "<variable " + str(self.name) + ">"
 
@@ -128,7 +129,7 @@ function_or_element = (name + Literal("(").suppress() + Group(arguments) +
 
 element << (var_name | number | (Literal("(").suppress() + Group(equation) + 
                              Literal(")").suppress()))
-equation << function_or_element + ZeroOrMore(infix + function_or_element)
+equation << (function_or_element + ZeroOrMore(infix + function_or_element))
 
 
 
@@ -138,11 +139,14 @@ def evaluate(text, variables={}, functions={}):
     """
     Evaluates the specified text as an arithmetic equation. The decimal module
     is used to do the actual calculations so that there's quite a bit of
-    precision available. The equation can contain references to variable names.
-    If it does, the variables will be looked up in the variable dict specified.
-    There are some built-in variables (such as pi) that are available and do
-    not need to be inserted into the dict. Variable values stored in the dict
-    should be instances of decimal.Decimal.
+    precision available. 
+    
+    The equation can contain references to variable names. If it does, the 
+    variables will be looked up in the variable dict specified. There are some 
+    built-in variables (such as pi) that are available and do not need to be 
+    inserted into the dict. Variable values stored in the dict should be 
+    instances of decimal.Decimal. Variable names must start with a letter, and
+    they can contain letters, numbers, and underscores.
     
     The equation can also contain function invocations, in the form
     funcname(arg1, arg2, arg3), where each of the arguments is an equation.
@@ -154,7 +158,15 @@ def evaluate(text, variables={}, functions={}):
     """
     # First we'll actually parse the equation.
     parsed = equation.parseString(text, True).asList()
-    # Now we hand the list off to the resolver.
+    # Now we hand the list off to the resolver. We should consider caching the
+    # parsed equation in a LRU map for efficiency, as some testing I did ended
+    # up showing that parsing (I.E. the line above this one) is a few orders of
+    # magnitude slower than resolving (I.E. the line below this one). I tested
+    # out evaluating (5+3)*4 on a 1.66GHz dual-core processor with processing
+    # speed set to 1GHz because of being on battery power, and parsing took an
+    # average of 2000 microseconds while resolving took around 10 microseconds.
+    # Quite a significant difference, huh? The advantage to caching the parsed
+    # form instead of the result 
     return resolve(parsed, variables, functions)
 
 def resolve(items, variables, functions):
