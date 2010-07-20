@@ -71,7 +71,7 @@ class User(object):
         self.persistent_name = persistent_name
         self.display_name = display_name
         self.group_name = group_name
-        self.tracking = User.TRACKED
+        self.tracked = User.TRACKED
         self.local = local
         if register:
             self.register()
@@ -83,11 +83,37 @@ class User(object):
         field if this is marked as the local user.
         """
         with self.server.lock:
-            # We need to make sure there's FIXME: finish this 
+            # We need to make sure there's not already a user with our name in
+            # the map. If there is, we'll replace them unless they're the
+            # local user and we're not. 
             if self.transient_name in self.server.user_map:
+                # There's a transient conflict. We need to figure out what to
+                # do about it.
                 other_user = self.server.user_map[self.transient_name]
                 if other_user.local and not self.local:
+                    # The other user is local and we're not local. We'll raise
+                    # an exception.
                     raise errors.TransientConflict()
+                # Either we're local or the other user isn't local. We'll
+                # remove the user from the map.
+                other_user.untrack(User.TRANSIENT_CONFLICT)
+            # We've removed the conflicting user if there was one. Now we'll
+            # add ourselves to the list.
+            self.server.user_map[self.transient_name] = self
+            if self.local:
+                self.server.local_user = self
+            # ...and we're done!
+    
+    def untrack(self, reason):
+        """
+        Removes this user from the server's user list if it's present, and
+        marks this user object as untracked for the specified reason. 
+        """
+        with self.server.lock:
+            if (self.transient_name in self.server.user_map and 
+                self.server.user_map[self.transient_name] is self):
+                del self.server.user_map[self.transient_name]
+            self.tracked = reason
     
     @when_user_tracked
     def send_message(self, message):
@@ -105,7 +131,29 @@ class User(object):
                 raise UserNotTracked("User object not in server's user map")
             if self.server.user_map[self.transient_name] is not self:
                 raise UserNotTracked("User object being tracked is not self")
-            self.server.user_map
+            # Preconditions are satisfied. Now we check to see if there's a
+            # transient conflict.
+            if name in self.server.user_map:
+                # There's a transient conflict.
+                other_user = self.server.user_map[name]
+                # If the other user is local and we're not, we untrack 
+                # ourself and return
+                if other_user.local and not self.local:
+                    self.untrack()
+                    return
+                # The other user is not local or we are. We'll go ahead and
+                # untrack the other user.
+                other_user.untrack()
+            # We've resolved the transient conflict if there was one. Now we
+            # update our own transient name and switch the registration in the
+            # user map. First thing to do is delete our old entry in the map.
+            if self.transient_name in self.server.user_map:
+                del self.server.user_map[self.transient_name]
+            # Now we switch our transient name...
+            self.transient_name = name
+            # ...and put ourselves back into the map under our new name.
+            self.server.user_map[name] = self
+            # That's it! We're done!
     
 
 class Channel(object):
@@ -117,6 +165,9 @@ class Server(object):
     A server.
     """
     def __init__(self, db_object):
+        """
+        Initializes this server object.
+        """
         self.user_map = WeakValueDictionary()
         self.channel_map = {}
         self.lock = Lock()
@@ -155,14 +206,21 @@ class Server(object):
         """
         self.protocol.disconnect()
     
+    def is_connected(self):
+        raise Exception("Not implemented yet")
+    
     def clear_session_data(self):
         """
         Clears the information for the last session from this server object.
         This involves clearing the channel map and the user map. This
-        synchronizes on the server lock. 
+        synchronizes on the server lock. This also untracks any users still in
+        the session map.
         """
         with self.lock:
-            self.user_map.clear()
+            for user in self.user_map.values():
+                user.untrack()
+            # TODO: figure out if the channel map should have a weak map
+            # similar to the user map or not
             self.channel_map.clear()
             self.local_user = None
     
@@ -212,50 +270,75 @@ connection_cycle_interval = 120 # 2 minutes
 @as_new_thread
 def start_connection_cycle_thread():
     while jzbot_is_running:
+        # We'll wait for the amount of time we're supposed to, but we'll check
+        # every 2 seconds for a couple of conditions that could cause us to
+        # stop waiting early.
         for i in xrange(connection_cycle_interval / 2):
             time.sleep(2)
+            # If jzbot is trying to shut down, we'll return from the thread.
             if not jzbot_is_running:
                 return
+            # If someone has requested that a connection cycle be run, we'll
+            # quit waiting and run a cycle.
             if connection_cycle_needed:
                 break
+        # Wait's over! Now we'll go ahead and perform a connection cycle.
         try:
             do_single_connection_cycle()
         except:
+            # We catch all exceptions so that it's impossible for the
+            # connection cycle thread to die unless something really drastic
+            # happens. But we'll print the exception to stdout. In the future,
+            # we might consider logging this somewhere so that superops can see
+            # what happened.
             print "Exception in connection cycle thread:"
             traceback.print_exc()
 
 
 def do_single_connection_cycle():
     # First we clear the flag indicating that we need to perform a
-    # connection cycle.
+    # connection cycle (cause we're about to perform a cycle).
     connection_cycle_needed.clear()
-    # First we get the list of servers from the database
+    # Now we actually perform the cycle. First we get the list of servers from
+    # the database
     db_server_list = list(datastore.db.servers.find({}))
     db_server_map = {}
     # Now we make sure we have a server object for each server we selected from
     # the database
     for db_server in db_server_list:
         if  db_server["name"] not in server_map:
-            # We don't have a server object, so we'll create one.
+            # We don't have a server object, so we'll create one and add it to
+            # the server map.
             server = Server(db_server)
             server_map[server.name] = server
+        # We'll also build up a map of server names to the corresponding
+        # database objects. This will be used later in the loop.
         db_server_map[db_server["name"]] = db_server
-    # Now we iterate over all the servers and get everything connected up
+    # Now we iterate over all the servers and get everything connected up.
     for name, server in server_map.items():
+        # We'll stick the database server object in db_server. If there isn't
+        # one (which would be because the corresponding database server has
+        # been deleted since the last cycle and we're supposed to disconnect
+        # and then delete the corresponding server), then we'll just set the
+        # local variable to None.
         if name in db_server_map:
             db_server = db_server_map[name]
         else:
             db_server = None
-        # Check to see if the server is connected but it shouldn't be
+        # Check to see if the server is connected but it shouldn't be. Reasons
+        # the server shouldn't be connected are because there's no database
+        # server object (which means the server has been deleted), the server
+        # is not currently active in the database, 
         should_disconnect = (db_server is None or (not db_server["active"])
                              or server.needs_reconnect())
-        if should_disconnect:
+        if should_disconnect and server.is_connected():
             # The server needs disconnecting, so we'll do exactly that.
             server.disconnect()
         # Now we check to see if the server is disconnected, and if it is, we
         # clear out its session data.
         if not server.is_connected():
             server.clear_session_data()
+        # TODO: finish the rest of this method
 
 
 def load_configuration_module():
