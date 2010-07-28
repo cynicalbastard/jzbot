@@ -187,7 +187,10 @@ class Server(object):
         self.config_properties = dict(db_object["config"])
     
     def get_user(self, transient_name):
-        pass
+        """
+        Gets a user object representing a user with the specified transient
+        name. 
+        """
     
     def init_user_info(self, transient_name, persistent_name=None,
                        display_name=None, group_name=None):
@@ -257,7 +260,7 @@ class Server(object):
 
 class CommandSpooler(Thread):
     """
-    A class to spool commands for a server
+    A class to spool commands for a server. This 
     """
     def __init__(self):
         Thread.__init__(self)

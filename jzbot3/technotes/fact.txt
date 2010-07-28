@@ -1,0 +1,169 @@
+This documents the new version of the Fact programming language that will be used in JZBot 3.
+
+JZBot 2's Fact was great, but there were some things that really could have been done better. Since Fact evolved out of something that wasn't intended to be a fully-featured programming language at all, it was missing some things that make life easier. Some of the more noticeable effects of this are:
+
+	It's not possible to define custom functions (this was added in revision 1349, but it's quite hackish)
+	
+	Almost all numeric comparisons were vulnerable to code injection. This is because a factoid to see if a number is negative might read {if|%1%<0|It's negative.|{if|%1%>0|It's positive.|It's zero.}} or something along those lines. The problem is that the person running the factoid could inject any arbitrary arithmetic equation as the first argument. For this particular example, it's not that big of a deal, but it has the potential to cause serious problems in other situations.
+	
+	The only datatype is text, and (obviously) there's no object-orientedness. This was considered a feature of Fact because of the simplicity of learning the language, but the particular lack of a list data type made iteration functions unnecessarily convoluted.
+	
+	There was no equivalent of the eval function, I.E. there was no possible way for a Fact program to itself run an arbitrary string of Fact code.
+	
+	There was no concise syntax for equation evaluation. The only way to do it was by {eval|...}, and that was vulnerable to injection as mentioned above.
+	
+	Evaluation only supported numeric types. Arbitrary string comparisons had to be done with functions specifically made for the purpose, such as ifcneq.
+	
+	The interpreter was integrated into JZBot to the point that it could not be used by an external application
+	
+	Exceptions were essentially a thin layer over Java exceptions, which made it quite difficult for a factoid itself to throw an exception
+	
+	There was no easy way to instruct the interpreter to ignore certain pieces of white space, which made indentation (where it was needed) quite difficult
+	
+So, we have some problems that need to be solved. The one thing that is an absolute must, regardless of all other factors, is that plain text without any of the special symbols surrounding it should be interpreted as literal text, a.k.a. strings. A factoid consisting of the text "Hello, world!" must output "Hello, world!" regardless of anything else.
+
+Another thing that really, really needs to be in there is that factoids should be almost completely reverse-compatible. There are bound to be some situations in which this isn't entirely possible, but it needs to be as close as we can get it to avoid a huge amount of work being needed to port all of the current factoids to the new version of Fact.
+
+One thing I'm considering is two different syntaxes that are both mixed together: text mode and syntax mode. My thinking is that special characters can be used to somehow indicate a block of each, and a block of one can be embedded within a block of another. Text-mode would be used for pieces of text with function calls and variable references embedded within. (Essentially, JZBot 2's Fact would be considered to consist entirely of text-mode syntax.) Syntax-mode would be more like traditional programming languages, where it would ignore whitespace and literal characters could be interpreted as keywords instead of as text (which would allow symbols, such as ==, >, <, etc., to represent comparisons). 
+
+Choosing symbols to delineate between the two modes would be a bit more difficult. The problem is that very few symbols should be reserved as special in text mode to allow almost any text to be interpreted, and almost all of the already-existing symbols are going to be used for other functions in syntax mode. Hence the difficulty.
+
+I had considered using double quotes to switch from syntax mode to text mode to keep in line with other programming languages. However, that makes embedding double quotes within text mode strings that aren't toplevel (toplevel meaning text in the factoid itself, since factoids start out in text mode, as opposed to text wrapped inside a syntax mode block) somewhat difficult.
+
+I had also considered using percent signs to switch from text mode to syntax mode as this would allow reverse compatibility with Fact 2 (%something% would simply be a really short syntax-mode block consisting of a reference to the local variable named something). The problem with that is that it causes problems with trying to implement the modulus operator, which also uses the percent sign. Curly braces and pipes are already used in text mode to execute functions and embed the results of function invocation, so they can't be used for switching. Parentheses are too common of an English language construct to be given any special meaning. Brackets might be a possibility. The only problem with brackets is that I had planned on using them to represent lists and maps within syntax mode; this isn't a syntax conflict per se as nesting would resolve any such ambiguities, but it results in a duality of operators which could be prone to confusion. I won't rule it out, though, as at present it's the best solution I can think of.
+
+So, my current idea is that text mode could be entered using either double quotes or backticks. Double quoted text mode strings can contain double quotes by escaping them with a backslash, similar to how text mode strings can contain brackets by escaping them with backslashes. Backtick quoted strings would be the same way: backslash-escaped backticks could be included.
+
+Due to the nature of the language (I.E. the fact that it's being developed for a chat bot, meaning programs will almost invariably be one-line only), white space, including newlines, will not have syntactic meaning in syntax mode. Statements will be semicolon-separated, with a semicolon being optional for the last statement in a block. Braces are used to demarcate blocks. The special value null is used much like its Python counterpart.
+
+Now we arrive at another complication: text mode and syntax mode should be interoperable, I.E. they should be nothing more than two different ways to express similar constructs. This works out thus far: functions can be first-class objects, much as they are in Python; function invocations in text mode can simply invoke the function named by that local variable if the argument is a string or the specified function if the argument is a function, and so on. (note an interesting point: {something} and {[something]} would be identical.) The problems start to appear when one considers some important concepts in Fact 2 that need to be retained in Fact 3. The first one that comes to mind is that arguments to functions in text mode are evaluated lazily. {for|1|5|var|something|} evaluates something five times. How should such a concept be expressed when defining functions, and more specifically, when invoking them in syntax mode?
+
+At this point, I'm thinking function definitions should be able to specify whether they plan on resolving arguments lazily or whether they simply want the value of the arguments. I'm also thinking function definitions should be able to specify whether the function is to be invoked in the context of the surrounding stack frame or whether it should be invoked in its own stack frame. Thus arguments to a function as invoked from within text mode are actually anonymous functions that invoke themselves within their parent's stack frame. These functions would be invoked in a stack frame that for all intents and purposes is the same as the parent's; the only difference would be that it contains additional information about the inner function. This would add an important debugging capability: something like {for|1|5|v|{ifeq|example|example|{throw|...}}} would cause the exception thrown by the throw function to contain each of its surrounding functions as specially-marked stack frames, which would help quite a bit with debugging. Fact 2 prints out the same data, but it's not a built-in part of the language like it would be here.
+
+So, functions can specify for each of their arguments whether that argument is to be lazily resolved, whether the argument is to be passed in as-is, or whether the argument is to be explicitly resolved if it is a function marked specifically as being a lazy wrapper. This means that it's also possible to specify, when defining a function, if the function is intended to be a lazy wrapper or not. I haven't yet worked out how that will be done, but I'm almost thinking of using a decorator-like syntax.
+
+Now, how to define a function. My thought is that blocks and functions should be the same thing. They would have to have some syntax for specifying the list of arguments that can be used. I don't think the syntax for this is going to be exactly pretty since we're running out of symbols, but my thought is to use angle brackets. An expression (and statements in Fact are also expressions and can be used as such; I'll get to that in a bit) cannot legally start with a less-than sign by any other rules, so using it to specify some metadata about a function would work. So, a really simple function that, when invoked, returns null would be {}. A really simple function that accepts a single argument and returns null would be {<something>}. A function that accepts a single argument and returns it would be {<something>something}. A function that accepts a single argument and returns it as-is (I.E. without resolving it if it's a lazily-wrapped function) would be {<something verbatim>something}. We basically have these suffixes for function arguments which are "lazy" and "verbatim". Lazy arguments are wrapped with a lazy wrapper if they are passed in as anything else. Verbatim arguments are not modified in any way. Arguments with no suffix, which are termed resolved arguments, are resolved only if they are passed in as a lazy wrapper. I'm also thinking there should be a fourth suffix, "resolved", which indicates that an argument should be resolved if it's a function regardless of whether or not it is marked as a lazy wrapper. Arguments marked "resolved" resolve recursively until the resulting value is not a function; if a function along the way requires arguments, an exception will be thrown.
+
+By that we see that arguments to functions can be passed simply as lazy wrappers all the time by text mode, and the corresponding function can choose how it wants to interpret the input.
+
+A function with multiple arguments would look like {<something, another lazy, whatever verbatim>...}. Note that every argument can be of a different type. Note also that variadic arguments are supported via {<something, another lazy, whatever, the_rest remaining>...}. Variadic arguments are always treated as verbatim; it's up to the function to resolve them if it so chooses.
+
+A function can have attributes applied to it. I'm thinking now that decorators won't be supported; instead, attributes are simple pieces of metadata attached to the function at the time it's constructed. The notation for this is @key or @key:value and is used in place of a single argument in the argument list. The key and the value can really be anything. Keys can't as of yet be expressions; if you want to do that, you have to access the function's attributes after constructing it and modify them accordingly. Values, however, are always expressions (if they are even present). The function stores a map containing the key-to-value mappings of valued keys and a list of valueless keys. I'm thinking both will probably also be stored in a list to somehow preserve order. A key cannot appear twice.
+
+The only keys given special meaning by Fact itself are @name, @lazy, and @def. @lazy is valueless and specifies that the function is a lazy wrapper. @name is valued and specifies the name for the function, which will be shown in stack traces. @def (which is named after Python's def keyword) is valueless and indicates that a function should be given its own stack frame when being invoked (functions without this will be invoked under their creator's stack frame as mentioned above). @def is special in that its presence is detected and processed before function construction finishes, so it's not possible to dynamically alter it later and change Fact's interpretation of the function. UPDATE: some other ones (such as @class) are also given special meaning, see below.
+
+If a function returns by dropping off the end, the last statement in the function is the function's return value.
+
+Since blocks are functions, there are no reserved keywords for looping or if/else statements. Using the standard for function, which will be inherited directly from Fact 2, the following:
+
+for(1, 3, "var", {
+    "Hello " + var
+}, " -- ")
+
+is equivalent to:
+
+"Hello 1 -- Hello 2 -- Hello 3"
+
+We can see an example of the difference between independent functions (those annotated with @def) and dependent functions (those not annotated with @def) when we consider:
+
+data = "example";
+for(1, 3, "var", {
+    data = data + var
+})
+
+This example works, and the local variable data contains "example123" at the end. Had we done:
+
+data = "example";
+for(1, 3, "var", {<@def>
+    data = data + var
+})
+
+instead, the third line would have thrown an exception telling us that there's no such variable named data. We can also observe an example that works both ways but produces different results:
+
+data = "example";
+temp = "something";
+for(1, 3, "var", {
+    temp = "n" + var
+    data += temp
+}
+
+At the end of this example, data contains "examplen1n2n3", and temp contains "n3". Had we done:
+
+data = "example";
+temp = "something";
+for(1, 3, "var", {<@def>
+    temp = "n" + var
+    data += temp
+}
+
+data would have been "example" and temp would have been "something". Those used to traditional programming languages might be wondering why the fifth line didn't throw an exception complaining that the variable data doesn't exist. This serves to illustrate another point about Fact: attempting to perform an inline modification of a nonexistent variable causes the variable to first be created with a default value depending on the type of object passed to the operation. If the object is a string, the variable is initialized to be the empty string. If the object is a number, the variable is initialized to be the number 0. If the object is a list, the variable is initialized to be an empty list. If the object is a map, the variable is initialized to be an empty map. If the object is of any other type, the variable is initialized to be null.
+
+Fact 3 is object-based. Objects have only a weak notation of class. However, there is a special annotation that can be used to remove a lot of the boilerplate that would otherwise be associated with creating a class, namely @class. @class implies @def, I.E. the resulting function will be invoked on its own stack frame. @class also causes a local variable named this to be set to a new object, and if the function drops off the end, this variable will be returned. Note that if the variable's value is changed during function invocation, that new value will be the value returned.
+
+The @method annotation is also useful. It causes the function annotated by it to save a reference to the value of the this variable at the point of function definition, and when the function is executed it will have a local variable named this set to that object. Due to the naming conflict, an exception will be thrown if a function is defined with both @class and @method.
+
+So, an example of defining a class:
+
+some_class = {<@class, @name="some_class", name>
+    this.name = name;
+    this.get_name = {<@method>
+        this.name
+    };
+    this.set_name = {<@method, name>
+        this.name = name
+    };
+}
+
+Then we can do:
+
+person = some_class("Bob Joe");
+do_something_with(person.get_name())
+person.set_name("Bill Jarvis")
+do_something_with(person.name)
+
+and so on.
+
+Everything is an object. The class of an object can be determined using the class function. The class of null is null. The class of a map is the built-in type map. The class of a number is the built-in type number, the class of a string is the built-in type string, and the class of a list is the built-in type list. The class of an object is the function used to create it, or null if there is no such function (I.E. if the object was created at toplevel, which is only possible using the built-in new function).
+
+The map class and the list class are callable. The number class is not. I haven't yet decided whether the string class will be callable or not. Calling the map class is the only way to create a blank map. A map with items already in it can be constructed using brackets, as can a list. For example:
+
+numbers_to_names_map = [1: "one", 2: "two", 3: "three"]
+numbers_list = [1, 2, 3]
+
+Note that the inclusion of colons and items after them are the only thing that differentiates a list from a map. [] is a blank list; this is why the only possible way to create a blank map is by calling the map class.
+
+Unlike JavaScript, and very much like Python, a map's mappings and its attributes are kept in two entirely separate scopes. I haven't yet decided how to access items in a list or a map, but I'm thinking I'll probably use the same notation that Python uses.
+
+Another thing that needs to be included is the ability to access variables other than local variables. Persistent variables, global variables, and chain variables (if Fact 3 even has such a concept as chain variables) all need to be accessed and written. Additionally, any of those variables as seen from a stack frame a certain number of levels above the current one should be readable and writable, and there should be some way to specify whether or not dependent functions count toward stack frames. 
+
+I haven't yet decided if there will be a delete keyword or if there will be a function instead. Or if there will be both of them.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+
+
+
+
+	
