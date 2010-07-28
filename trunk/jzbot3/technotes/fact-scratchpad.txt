@@ -1,0 +1,6 @@
+
+
+example = "Hello, world!"
+example$1 = "Hello, world!"
+example$stack_position = "Hello, world!"
+'factoid' example$stack_position = "Hello, world!"

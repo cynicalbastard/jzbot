@@ -85,6 +85,33 @@ class DynamicList(object):
         return self.items.__iter__()
 
 
+class IgnoreExceptions(object):
+    """
+    A context manager that ignores either all exceptions thrown from within it
+    or exceptions from a specific list.
+    """
+    def __init__(self, *exceptions):
+        """
+        Creates a new context manager. If exceptions is present, it should be
+        a list of exception classes, and only exceptions that are instances of
+        classes in the list (or instances of subclasses in the list) will be
+        caught and ignored.
+        """
+        # I can't remember if the args are passed as a tuple or as a list. If
+        # they're passed as a tuple, we can remove the tuple constructor to
+        # save on processing time.
+        self.exceptions = tuple(exceptions) if len(exceptions) > 0 else None
+    
+    def __enter__(self):
+        pass
+    
+    def __exit__(self, exception_type, value, traceback):
+        if exception_type is None:
+            return False
+        if self.exceptions is None:
+            return True
+        return issubclass(exception_type, self.exceptions)
+
 
 
 
