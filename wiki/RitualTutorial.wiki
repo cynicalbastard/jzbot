@@ -29,15 +29,15 @@ and we are done :D
 
 =Functions=
 in ritual the functions are called like this:
-||{{ || function ||`|``|` Parameter1 ||`|``|` Parameter2 || ... || }} ||
-||the {{ start a new function || the function name || most functions need paramters || another Parameter || Parameters are seperated by `|``|` || the }} close the function again ||
+||{ || function ||`|` Parameter1 ||`|` Parameter2 || ... || } ||
+||the { start a new function || the function name || most functions need parameters || another parameter || Parameters are seperated by `|` || the } close the function again ||
 
 ===Function Example===
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
 <td><code>
-<schrottplatz> ~factoid create test {{action}}slaps schrottplatz with an old green fish
+<schrottplatz> ~factoid create test {action}slaps schrottplatz with an old green fish
 <Marlen_Jackson> Factoid test created.
 <schrottplatz> ~test
 `*` Marlen_Jackson slaps schrottplatz with an old green fish
@@ -70,14 +70,14 @@ In this example I want to create a List of members. This was how I searched the 
   pad   pastebin   pdelete   pget   pset   radix   random   randomint `[`...`]`
 
 <schrottplatz> ~help functions members
-<Marlen_Jackson> Syntax: {{members||<channel>}} -- Evaluates to a space-separated list of the nicknames of the people that are currently in <channel>.
+<Marlen_Jackson> Syntax: {members|<channel>} -- Evaluates to a space-separated list of the nicknames of the people that are currently in <channel>.
 </code>
 <table><tr>
 <td> *Code:* </td><td> *Comment:* </td>
 </tr><tr>
 <td><code>
 <schrottplatz> ~factoid create memberlist
-Members in the channel ##jzbot: {{members||##jzbot}}
+Members in the channel ##jzbot: {members|##jzbot}
 <Marlen_Jackson> Factoid memberlist created.
 <schrottplatz> ~memberlist
 <Marlen_Jackson> Members in the channel ##jzbot: Marlen_Jackson ChanServ MrDudle schrottplatz
@@ -86,7 +86,7 @@ Members in the channel ##jzbot: {{members||##jzbot}}
 </code></td>
 <td>
 <code>
-What I did now was actually just pasting `{{members||<channel>}}` 
+What I did now was actually just pasting `{members|<channel>}` 
 and changing <channel> to the channel ##jzbot
 the bot acknowledges the factoid
 now I call the factoid
@@ -148,20 +148,20 @@ The channel where the factoid was called from / current channel
 <Marlen_Jackson> Factoid call deleted.
 </code>
 ==Global Variables==
-Global variables can be set by yourself using the {{set`|``|``<`varname>`|``|``<`value>}}
-and called using `$varname$` or {{get`|``|``<`varname>}}
+Global variables can be set by yourself using the {set`|``|``<`varname>`|``|``<`value>}
+and called using `$varname$` or {get`|``|``<`varname>}
 
 
 =Call Factoids Using A Factoid=
-You can do that using the {{import`|``|``<`factoid>`|``|``<`argument1>||...}}
+You can do that using the {import`|``|``<`factoid>`|``|``<`argument1>|...}
 You can return values directly or using variables.
 ===Factoid Example===
 <code>
-<schrottplatz> ~factoid create return1 {{eval`|``|`%1%+%2%}}
+<schrottplatz> ~factoid create return1 {eval`|``|`%1%+%2%}
 <Marlen_Jackson> Factoid return1 created.
-<schrottplatz> ~factoid create return2 {{set`|``|`returnvalue`|``|`{{eval`|``|`%1%+%2%}}}}
+<schrottplatz> ~factoid create return2 {set`|``|`returnvalue`|``|`{eval`|``|`%1%+%2%}}
 <Marlen_Jackson> Factoid return2 created.
-<schrottplatz> ~factoid create add Normal return: {{import`|``|`return1`|``|`%1%`|``|`%2%}} Return using a Variable: {{import`|``|`return2`|``|`%1%`|``|`%2%}}$returnvalue$
+<schrottplatz> ~factoid create add Normal return: {import`|``|`return1`|``|`%1%`|``|`%2%} Return using a Variable: {import`|``|`return2`|``|`%1%`|``|`%2%}$returnvalue$
 <Marlen_Jackson> Factoid add created.
 <schrottplatz> ~add 3 4
 <Marlen_Jackson> Normal return: 7 Return using a Variable: 7
