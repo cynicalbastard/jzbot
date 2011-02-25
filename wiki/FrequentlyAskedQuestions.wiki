@@ -82,6 +82,9 @@ For the technically inclined, each server tends to take up around 1KB in the dat
 ==Is there a limit on how many plugins can be loaded?==
 As with the previous two questions, there isn't such a fixed limit, but each plugin is run in its own process (which means it takes up some memory), and each plugin uses a TCP socket connection, so the operating system JZBot is being run on can end up enforcing a practical limit. A good value would be to keep loaded plugins at less than 50.
 
+==Does JZBot support IPv6?==
+Yes! We fully support the 'new' version of IP, and can connect and similar, just as you would with IPv4.
+
 ==I've heard the terms "JZBot", "Marlen", "Marlen Jackson", "multimarlen", "devmarlen", and others, used when discussing things related to JZBot. What's the difference between all of these?==
 The JZBot developers, [People#Alex Alex] included, have an unfortunate tendency to get these constantly mixed up. So we might refer to one when we mean the other. But technically, they mean these things, respectively:
  * *JZBot* is the name used for the entire project, and the program itself that the project has created.
